@@ -47,6 +47,7 @@ jobs:
           report-path: './ctrf/*.json'
           pull-request: true
           write-ctrf-to-file: 'ctrf/ctrf-report-final.json'
+          github-report: true
         if: always()
 
       - name: "Generate test coverage badge"
