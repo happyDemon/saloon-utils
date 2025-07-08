@@ -1,0 +1,65 @@
+name: Tests
+
+on:
+  push:
+
+env:
+
+jobs:
+  pre_job:
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5
+        with:
+          # All of these options are optional, so you can remove them if you are happy with the defaults
+          concurrent_skipping: 'never'
+          skip_after_successful_duplicate: 'true'
+
+  tests:
+    name: Run tests
+    runs-on: ubuntu-latest
+    #runs-on: self-hosted
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: "PHP unit"
+        uses: matriphe/laravel-pkg-test-action@v2
+        with:
+          operating_system: ubuntu-latest
+          php_version: 8.3
+          php_extensions: pdo_sqlite,sqlite3,xdebug
+          laravel_version: 12.*
+          branch: main
+          laravel_install_args: --prefer-dist
+          package_install_args: --prefer-dist --no-progress
+          phpunit_args: --log-junit junit.xml --coverage-clover clover.xml
+          shell_name: bash
+
+      - name: Convert JUnit report to ctrf
+        run: npx junit-to-ctrf ./junit.xml
+
+#      - name: Commit & Push report
+#        uses: actions-js/push@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          message: 'test: update test report'
+
+      - name: Publish Test Report
+        uses: ctrf-io/github-test-reporter@v1
+        with:
+          report-path: './ctrf/*.json'
+          pull-request: true
+          write-ctrf-to-file: 'ctrf/ctrf-report-final.json'
+        if: always()
+
+      - name: "Generate test coverage badge"
+        uses: timkrase/phpunit-coverage-badge@v1.2.0
+        with:
+          coverage_badge_path: 'badge-coverage.svg'
+          push_badge: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
