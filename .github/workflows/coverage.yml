@@ -19,8 +19,14 @@ jobs:
   tests:
     name: Generate report
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     #runs-on: self-hosted
     steps:
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
       - name: Checkout code
         uses: actions/checkout@v2
