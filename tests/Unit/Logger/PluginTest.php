@@ -15,8 +15,6 @@ use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
-#[CoversClass(LoggerPlugin::class)]
-#[CoversClass(\HappyDemon\SaloonUtils\Logger\Contracts\Logger::class)]
 class PluginTest extends TestCase
 {
     /**

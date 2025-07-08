@@ -15,7 +15,6 @@ use Saloon\Http\Connector;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
-#[CoversClass(LoggerService::class)]
 class LoggerServiceTest extends TestCase
 {
     protected function mockResponse(Connector $connector, MockResponse $mockResponse): void

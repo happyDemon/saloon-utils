@@ -14,7 +14,6 @@ use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
-#[CoversClass(DatabaseLogger::class)]
 class DatabaseLoggerTest extends TestCaseDatabase
 {
     /**
