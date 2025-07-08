@@ -1,5 +1,7 @@
 name: Laravel Pint
-on: pull_request
+on:
+  - pull_request
+  - push
 jobs:
   pint:
     runs-on: ubuntu-latest
