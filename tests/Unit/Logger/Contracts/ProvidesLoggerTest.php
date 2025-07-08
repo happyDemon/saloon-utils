@@ -2,13 +2,11 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Contracts;
 
-use HappyDemon\SaloonUtils\Logger\Contracts\ProvidesLogger;
 use HappyDemon\SaloonUtils\Logger\MemoryLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorProvidesLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
 use HappyDemon\SaloonUtils\Tests\TestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;

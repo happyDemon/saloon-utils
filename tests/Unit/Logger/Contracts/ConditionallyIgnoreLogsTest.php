@@ -2,12 +2,10 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Contracts;
 
-use HappyDemon\SaloonUtils\Logger\Contracts\ConditionallyIgnoreLogs;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorConditionalIgnore;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchConditionalIgnoreRequest;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
 use HappyDemon\SaloonUtils\Tests\TestCase;
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
