@@ -3,8 +3,6 @@ name: Code coverage
 on:
   push:
 
-env:
-
 jobs:
   pre_job:
     runs-on: ubuntu-latest
