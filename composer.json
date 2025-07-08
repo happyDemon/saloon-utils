@@ -1,0 +1,47 @@
+{
+    "name": "happydemon/saloon-utils",
+    "description": "Utilities for building Saloon SDKs",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maxim Kerstens",
+            "email": "maxim.kerstens@gmail.com",
+            "homepage": "https://github.com/happyDemon"
+        }
+    ],
+    "homepage": "https://github.com/happydemon/saloon-utils",
+    "keywords": ["Laravel", "Saloon", "SaloonUtils"],
+    "require": {
+        "PHP": "~8.2|~8.3|~8.4",
+        "illuminate/support": "~10.0|~11.0|~12.0",
+        "saloonphp/saloon": "^3.0"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "phpunit/phpunit": "~12.0",
+        "orchestra/testbench": "~8|~9|~10"
+    },
+    "autoload": {
+        "psr-4": {
+            "HappyDemon\\SaloonUtils\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HappyDemon\\SaloonUtils\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "HappyDemon\\SaloonUtils\\SaloonUtilsServiceProvider"
+            ],
+            "aliases": {
+                "SaloonUtils": "HappyDemon\\SaloonUtils\\Facades\\SaloonUtils"
+            }
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    }
+}

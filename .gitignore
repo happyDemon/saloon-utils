@@ -1,0 +1,8 @@
+/vendor/
+.phpunit.result.cache
+phpunit.xml.bak
+clover.xml
+/tests/coverage/
+/.phpunit.cache/
+/.idea
+composer.lock

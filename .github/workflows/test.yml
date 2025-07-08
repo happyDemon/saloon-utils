@@ -1,0 +1,32 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+        php: [ 8.2, 8.3, 8.4 ]
+        laravel: [ 10, 11, 12 ]
+        dependency-version: [ prefer-lowest, prefer-stable ]
+
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: "PHP unit"
+        uses: matriphe/laravel-pkg-test-action@v2
+        with:
+          operating_system: ${{ matrix.os }}
+          php_version: ${{ matrix.php }}
+          php_extensions: pdo_sqlite,sqlite3
+          laravel_version: ${{ matrix.php }}.*
+          laravel_install_args: --${{ matrix.dependency-version }}
+          package_install_args: --${{ matrix.dependency-version }} --no-progress --no-interaction --no-suggest
+          shell_name: bash
