@@ -12,7 +12,7 @@
     "homepage": "https://github.com/happydemon/saloon-utils",
     "keywords": ["Laravel", "Saloon", "SaloonUtils"],
     "require": {
-        "PHP": "~8.2|~8.3|~8.4",
+        "php": "~8.2|~8.3|~8.4",
         "illuminate/support": "~10.0|~11.0|~12.0",
         "saloonphp/saloon": "^3.0"
     },
