@@ -1,4 +1,4 @@
-name: Tests
+name: Code coverage
 
 on:
   push:
@@ -42,12 +42,6 @@ jobs:
 
       - name: Convert JUnit report to ctrf
         run: npx junit-to-ctrf ./junit.xml
-
-#      - name: Commit & Push report
-#        uses: actions-js/push@master
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          message: 'test: update test report'
 
       - name: Publish Test Report
         uses: ctrf-io/github-test-reporter@v1
