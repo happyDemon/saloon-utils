@@ -17,7 +17,7 @@ jobs:
           skip_after_successful_duplicate: 'true'
 
   tests:
-    name: Run tests
+    name: Generate report
     runs-on: ubuntu-latest
     #runs-on: self-hosted
     steps:
