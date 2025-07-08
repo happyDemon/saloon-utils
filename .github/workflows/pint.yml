@@ -27,4 +27,5 @@ jobs:
           onlyDiff: "main"
 
       - uses: stefanzweifel/git-auto-commit-action@v6
-        commit_message: "style: pint fixes"
+        with:
+          commit_message: "style: pint fixes"
