@@ -70,7 +70,7 @@ MIT
 
 [ico-version]: https://img.shields.io/packagist/v/happydemon/saloon-utils.svg?style=flat-square
 [ico-tests]: https://github.com/happydemon/saloon-utils/actions/workflows/test.yml/badge.svg
-[ico-coverage]: https://github.com/happydemon/saloon-utils/blob/master/badge-coverage.svg
+[ico-coverage]: https://github.com/happydemon/saloon-utils/blob/main/badge-coverage.svg
 
 [link-packagist]: https://packagist.org/packages/happydemon/saloon-utils
 [link-tests]: https://github.com/happyDemon/saloon-utils/actions/workflows/test.yml?query=branch%3Amain
