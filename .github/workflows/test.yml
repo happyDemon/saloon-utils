@@ -12,7 +12,6 @@ jobs:
       matrix:
         php: [ 8.2, 8.3, 8.4 ]
         laravel: [ 10, 11, 12 ]
-        dependency-version: [ prefer-stable ]
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }}
     steps:
@@ -26,6 +25,6 @@ jobs:
           php_version: ${{ matrix.php }}
           php_extensions: pdo_sqlite,sqlite3
           laravel_version: ${{ matrix.laravel }}.*
-          laravel_install_args: --${{ matrix.dependency-version }}
-          package_install_args: --${{ matrix.dependency-version }} --no-progress --no-interaction --no-suggest
+          laravel_install_args: --prefer-stable
+          package_install_args: --prefer-stable --no-progress --no-interaction --no-suggest
           shell_name: bash

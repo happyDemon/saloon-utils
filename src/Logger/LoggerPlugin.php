@@ -14,10 +14,10 @@ use Saloon\Http\Response;
  */
 trait LoggerPlugin
 {
-    const string CONFIG_LOGGER_SERVICE = 'saloon.logger.service';
-    const string MIDDLEWARE_LOGGER = 'saloon.logger.request';
-    const string MIDDLEWARE_RESPONSE = 'saloon.logger.response';
-    const string MIDDLEWARE_FATAL = 'saloon.logger.fatal';
+    const CONFIG_LOGGER_SERVICE = 'saloon.logger.service';
+    const MIDDLEWARE_LOGGER = 'saloon.logger.request';
+    const MIDDLEWARE_RESPONSE = 'saloon.logger.response';
+    const MIDDLEWARE_FATAL = 'saloon.logger.fatal';
 
     public function bootLoggerPlugin(): void
     {
