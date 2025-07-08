@@ -1,6 +1,6 @@
 # Saloon Utils
 
-[![Latest Version on Packagist][ico-version]][link-repman]
+[![Latest Version on Packagist][ico-version]][link-packagist]
 [![Tests Status][ico-tests]][link-tests]
 ![Test coverage]([ico-coverage])
 
@@ -72,7 +72,7 @@ MIT
 [ico-tests]: https://github.com/happydemon/saloon-utils/actions/workflows/test.yml/badge.svg
 [ico-coverage]: https://github.com/happydemon/saloon-utils/blob/master/badge-coverage.svg
 
-[link-repman]: https://app.repman.io/organization/shyfter/package/
-[link-tests]: https://travis-ci.org/happydemon/saloon-utils/blob/master/tests
+[link-packagist]: https://packagist.org/packages/happydemon/saloon-utils
+[link-tests]: https://github.com/happyDemon/saloon-utils/actions/workflows/test.yml?query=branch%3Amain
 [link-author]: https://github.com/happydemon
 [link-contributors]: ../../contributors
