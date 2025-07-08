@@ -13,9 +13,6 @@ use Saloon\Http\Response;
 
 class LoggerService
 {
-    /**
-     * @var Logger
-     */
     protected Logger $logger;
 
     /**
@@ -25,6 +22,7 @@ class LoggerService
     {
         if (is_a($connector, ProvidesLogger::class)) {
             $this->logger = $connector->setUpRequestLogger();
+
             return;
         }
 

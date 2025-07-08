@@ -2,7 +2,6 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Contracts;
 
-
 use HappyDemon\SaloonUtils\Logger\Contracts\DoNotLogRequest;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequestNoLog;
@@ -13,7 +12,6 @@ use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
-
 
 #[CoversClass(DoNotLogRequest::class)]
 class DoNotLogRequestTest extends TestCase
@@ -34,13 +32,12 @@ class DoNotLogRequestTest extends TestCase
         $this->connector->withMockClient($mockClient);
     }
 
-
     /**
      * @throws FatalRequestException
      * @throws RequestException
      */
     #[Test]
-    public function respectsContract(): void
+    public function respects_contract(): void
     {
         // Send the request (request implements `DoNotLogRequest`)
         $this->connector->searchWithoutLog('saloon request not logged');

@@ -2,7 +2,6 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
 
-
 use HappyDemon\SaloonUtils\Logger\DatabaseLogger;
 use HappyDemon\SaloonUtils\Logger\SaloonRequest;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
@@ -23,7 +22,7 @@ class DatabaseLoggerTest extends TestCaseDatabase
      * @throws RequestException
      */
     #[Test]
-    public function logsResponse(): void
+    public function logs_response(): void
     {
         $connector = app(ConnectorGeneric::class);
         $mockClient = new MockClient([
@@ -49,7 +48,7 @@ class DatabaseLoggerTest extends TestCaseDatabase
      * @throws RequestException
      */
     #[Test]
-    public function logsMultiple(): void
+    public function logs_multiple(): void
     {
         $connector = app(ConnectorGeneric::class);
         $mockClient = new MockClient([

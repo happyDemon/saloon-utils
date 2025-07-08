@@ -2,7 +2,6 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
 
-
 use HappyDemon\SaloonUtils\Logger\LoggerPlugin;
 use HappyDemon\SaloonUtils\Logger\LoggerService;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
@@ -15,7 +14,6 @@ use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
-
 
 #[CoversClass(LoggerPlugin::class)]
 #[CoversClass(\HappyDemon\SaloonUtils\Logger\Contracts\Logger::class)]
@@ -42,7 +40,7 @@ class PluginTest extends TestCase
      * @throws RequestException
      */
     #[Test]
-    public function getsSetUpCorrectly(): void
+    public function gets_set_up_correctly(): void
     {
         // Send the request
         $response = $this->connector->search('saloon');
@@ -72,7 +70,7 @@ class PluginTest extends TestCase
      * @throws RequestException
      */
     #[Test]
-    public function respectsGloballyDisabled(): void
+    public function respects_globally_disabled(): void
     {
         Config::set('saloon-utils.logs.enabled', false);
 
@@ -98,7 +96,7 @@ class PluginTest extends TestCase
      * @throws RequestException
      */
     #[Test]
-    public function logsNormalRequestCorrectly(): void
+    public function logs_normal_request_correctly(): void
     {
         // Send the request
         $this->connector->search('saloon');
@@ -120,7 +118,7 @@ class PluginTest extends TestCase
      * @throws RequestException
      */
     #[Test]
-    public function middleWareIsRegisteredOnce(): void
+    public function middle_ware_is_registered_once(): void
     {
         // Context: he logger is registered in middleware
 
@@ -142,7 +140,7 @@ class PluginTest extends TestCase
      * @throws RequestException
      */
     #[Test]
-    public function eachRequestIsLogged(): void
+    public function each_request_is_logged(): void
     {
         // Send the request
         $this->connector->search('saloon');

@@ -1,4 +1,5 @@
 <?php
+
 namespace HappyDemon\SaloonUtils\Tests\Saloon\Connectors;
 
 use HappyDemon\SaloonUtils\Logger\Contracts\Logger;
@@ -9,6 +10,6 @@ class ConnectorProvidesLogger extends ConnectorGeneric implements ProvidesLogger
 {
     public static function setUpRequestLogger(): Logger
     {
-        return new MemoryLogger();
+        return new MemoryLogger;
     }
 }

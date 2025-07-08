@@ -10,10 +10,9 @@ use Saloon\Http\Response;
 
 class DatabaseLogger implements Logger
 {
-
     public function create(PendingRequest $request, Connector $connector): mixed
     {
-        $log =  SaloonRequest::create([
+        $log = SaloonRequest::create([
             'connector' => get_class($connector),
             'endpoint' => $request->getRequest()->resolveEndpoint(),
             'request_headers' => $request->getRequest()->headers()->all(),
@@ -25,7 +24,7 @@ class DatabaseLogger implements Logger
     }
 
     /**
-     * @param SaloonRequest $log
+     * @param  SaloonRequest  $log
      */
     public function updateWithResponse(mixed $log, Response $response, Connector $connector): mixed
     {
@@ -36,12 +35,11 @@ class DatabaseLogger implements Logger
             'completed_at' => now(),
         ]);
 
-
         return $log;
     }
 
     /**
-     * @param SaloonRequest $log
+     * @param  SaloonRequest  $log
      */
     public function updateWithFatalError(mixed $log, FatalRequestException $errorResponse, Connector $connector): mixed
     {

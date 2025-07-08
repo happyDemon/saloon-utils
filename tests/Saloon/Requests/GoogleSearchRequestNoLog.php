@@ -1,6 +1,6 @@
 <?php
-namespace HappyDemon\SaloonUtils\Tests\Saloon\Requests;
 
+namespace HappyDemon\SaloonUtils\Tests\Saloon\Requests;
 
 use HappyDemon\SaloonUtils\Logger\Contracts\DoNotLogRequest;
 

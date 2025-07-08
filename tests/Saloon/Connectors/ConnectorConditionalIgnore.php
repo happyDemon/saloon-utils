@@ -1,4 +1,5 @@
 <?php
+
 namespace HappyDemon\SaloonUtils\Tests\Saloon\Connectors;
 
 use HappyDemon\SaloonUtils\Logger\Contracts\ConditionallyIgnoreLogs;

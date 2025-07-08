@@ -15,8 +15,11 @@ use Saloon\Http\Response;
 trait LoggerPlugin
 {
     const CONFIG_LOGGER_SERVICE = 'saloon.logger.service';
+
     const MIDDLEWARE_LOGGER = 'saloon.logger.request';
+
     const MIDDLEWARE_RESPONSE = 'saloon.logger.response';
+
     const MIDDLEWARE_FATAL = 'saloon.logger.fatal';
 
     public function bootLoggerPlugin(): void

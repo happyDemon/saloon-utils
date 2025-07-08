@@ -2,7 +2,6 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Contracts;
 
-
 use HappyDemon\SaloonUtils\Logger\Contracts\ProvidesLogger;
 use HappyDemon\SaloonUtils\Logger\MemoryLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
@@ -15,7 +14,6 @@ use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
-
 
 #[CoversClass(ProvidesLogger::class)]
 class ProvidesLoggerTest extends TestCase
@@ -36,13 +34,12 @@ class ProvidesLoggerTest extends TestCase
         $this->connector->withMockClient($mockClient);
     }
 
-
     /**
      * @throws FatalRequestException
      * @throws RequestException
      */
     #[Test]
-    public function respectsContract(): void
+    public function respects_contract(): void
     {
         // Send the request (request implements `DoNotLogRequest`)
         $response = $this->connector->search('saloon request not logged');

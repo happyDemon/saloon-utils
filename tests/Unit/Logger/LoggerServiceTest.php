@@ -2,7 +2,6 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
 
-
 use HappyDemon\SaloonUtils\Logger\LoggerService;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
@@ -32,7 +31,7 @@ class LoggerServiceTest extends TestCase
      * @throws RequestException
      */
     #[Test]
-    public function logsRequest(): void
+    public function logs_request(): void
     {
         $this->mock(
             LoggerService::class,
@@ -55,7 +54,7 @@ class LoggerServiceTest extends TestCase
      * @throws RequestException
      */
     #[Test]
-    public function logsResponse(): void
+    public function logs_response(): void
     {
         $this->mock(
             LoggerService::class,
@@ -72,9 +71,8 @@ class LoggerServiceTest extends TestCase
         $connector->search('saloon');
     }
 
-
     #[Test]
-    public function logsFatalException(): void
+    public function logs_fatal_exception(): void
     {
         $this->markTestSkipped('Needs a proper implementation that triggers FatalRequestException.');
     }

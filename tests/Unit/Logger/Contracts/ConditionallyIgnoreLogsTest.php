@@ -2,7 +2,6 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Contracts;
 
-
 use HappyDemon\SaloonUtils\Logger\Contracts\ConditionallyIgnoreLogs;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorConditionalIgnore;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchConditionalIgnoreRequest;
@@ -14,7 +13,6 @@ use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
-
 
 #[CoversClass(ConditionallyIgnoreLogs::class)]
 class ConditionallyIgnoreLogsTest extends TestCase
@@ -41,7 +39,7 @@ class ConditionallyIgnoreLogsTest extends TestCase
      * @throws RequestException
      */
     #[Test]
-    public function respectsContractOnConnector(): void
+    public function respects_contract_on_connector(): void
     {
         // Context: The connector will not log requests that search for "ignore"
 
@@ -61,7 +59,7 @@ class ConditionallyIgnoreLogsTest extends TestCase
      * @throws RequestException
      */
     #[Test]
-    public function respectsContractOnRequest(): void
+    public function respects_contract_on_request(): void
     {
         // Context: The connector will not log requests that search for "ignore-request"
 

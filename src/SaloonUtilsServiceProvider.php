@@ -12,8 +12,6 @@ class SaloonUtilsServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
-     *
-     * @return void
      */
     public function boot(): void
     {
@@ -25,12 +23,10 @@ class SaloonUtilsServiceProvider extends ServiceProvider
 
     /**
      * Register any package services.
-     *
-     * @return void
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/saloon-utils.php', 'saloon-utils');
+        $this->mergeConfigFrom(__DIR__.'/../config/saloon-utils.php', 'saloon-utils');
 
         // Default Logger to bundled database implementation
         $this->app->bind(Logger::class, fn (Application $application) => new DatabaseLogger);
@@ -38,8 +34,6 @@ class SaloonUtilsServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
     public function provides(): array
     {
@@ -51,18 +45,16 @@ class SaloonUtilsServiceProvider extends ServiceProvider
 
     /**
      * Console-specific booting.
-     *
-     * @return void
      */
     protected function bootForConsole(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/saloon-utils.php' => config_path('saloon-utils.php'),
+            __DIR__.'/../config/saloon-utils.php' => config_path('saloon-utils.php'),
         ],
             ['saloon-utils.config', 'saloon-utils']
         );
         $this->publishes([
-            __DIR__ . '/../database/0001_01_01_000001_create_saloon_requests_table.php' => database_path('migrations/0001_01_01_000001_create_saloon_requests_table.php'),
+            __DIR__.'/../database/0001_01_01_000001_create_saloon_requests_table.php' => database_path('migrations/0001_01_01_000001_create_saloon_requests_table.php'),
         ],
             ['saloon-utils.migrations', 'saloon-utils']
         );

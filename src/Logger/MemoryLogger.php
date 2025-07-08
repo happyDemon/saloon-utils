@@ -36,7 +36,7 @@ class MemoryLogger implements Logger
      */
     public function create(PendingRequest $request, Connector $connector): mixed
     {
-        $requestId = base64_encode(time() . '-' . $request->getRequest()->resolveEndpoint());
+        $requestId = base64_encode(time().'-'.$request->getRequest()->resolveEndpoint());
         $request->config()
             ->add('loggerRequestId', $requestId);
 
@@ -55,7 +55,7 @@ class MemoryLogger implements Logger
     }
 
     /**
-     * @param SaloonRequest $log
+     * @param  SaloonRequest  $log
      *
      * @throws InvalidArgumentException
      */
@@ -74,7 +74,7 @@ class MemoryLogger implements Logger
     }
 
     /**
-     * @param SaloonRequest $log
+     * @param  SaloonRequest  $log
      *
      * @throws InvalidArgumentException
      */

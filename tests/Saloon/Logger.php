@@ -51,6 +51,7 @@ class Logger implements \HappyDemon\SaloonUtils\Logger\Contracts\Logger
         ];
 
         $this->registerInCache($this->cacheKey($errorResponse->getPendingRequest()), $log);
+
         return $log;
     }
 
@@ -63,7 +64,7 @@ class Logger implements \HappyDemon\SaloonUtils\Logger\Contracts\Logger
 
     public function buildKey($endPoint, array $queryParameters = []): string
     {
-        return $endPoint . '.' . base64_encode(http_build_query($queryParameters));
+        return $endPoint.'.'.base64_encode(http_build_query($queryParameters));
     }
 
     protected function registerInCache($key, $data): void
