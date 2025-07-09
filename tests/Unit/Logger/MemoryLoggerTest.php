@@ -19,7 +19,7 @@ class MemoryLoggerTest extends TestCaseDatabase
 {
     protected function setUpFreshLoggerAndGetCache()
     {
-        $logger = new MemoryLogger();
+        $logger = new MemoryLogger;
 
         $storeProperty = (new ReflectionClass($logger))
             ->getProperty('store');
@@ -27,6 +27,7 @@ class MemoryLoggerTest extends TestCaseDatabase
 
         return $storeProperty->getValue($logger);
     }
+
     /**
      * @return void
      * @throws \ReflectionException
@@ -52,6 +53,7 @@ class MemoryLoggerTest extends TestCaseDatabase
             'Initialising the logger a second time should not reset cache.'
         );
     }
+
     /**
      * @throws FatalRequestException
      * @throws RequestException
@@ -99,7 +101,7 @@ class MemoryLoggerTest extends TestCaseDatabase
             // Send the request
             $connector->search($search);
 
-            $this->assertCount($i+1, $logger->logs());
+            $this->assertCount($i + 1, $logger->logs());
 
             // verify the data matches
             $request = new GoogleSearchRequest($search);
