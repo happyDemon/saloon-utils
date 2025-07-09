@@ -2,9 +2,7 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
 
-use HappyDemon\SaloonUtils\Logger\SaloonRequest;
 use HappyDemon\SaloonUtils\Logger\Stores\MemoryLogger;
-use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorProvidesLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
 use HappyDemon\SaloonUtils\Tests\TestCaseDatabase;
@@ -20,13 +18,12 @@ use Saloon\Http\Faking\MockResponse;
 class MemoryLoggerTest extends TestCaseDatabase
 {
     /**
-     * @return void
      * @throws \ReflectionException
      */
     #[Test]
     public function logger_inits_correctly(): void
     {
-        $logger = new MemoryLogger();
+        $logger = new MemoryLogger;
 
         $storeProperty = (new ReflectionClass($logger))
             ->getProperty('store');
@@ -42,6 +39,7 @@ class MemoryLoggerTest extends TestCaseDatabase
 
         $cache->put('test', 'x');
     }
+
     /**
      * @throws FatalRequestException
      * @throws RequestException
@@ -89,7 +87,7 @@ class MemoryLoggerTest extends TestCaseDatabase
             // Send the request
             $connector->search($search);
 
-            $this->assertCount($i+1, $logger->logs());
+            $this->assertCount($i + 1, $logger->logs());
 
             // verify the data matches
             $request = new GoogleSearchRequest($search);

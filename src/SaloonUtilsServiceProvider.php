@@ -3,8 +3,8 @@
 namespace HappyDemon\SaloonUtils;
 
 use HappyDemon\SaloonUtils\Logger\Contracts\Logger;
-use HappyDemon\SaloonUtils\Logger\Stores\DatabaseLogger;
 use HappyDemon\SaloonUtils\Logger\LoggerRepository;
+use HappyDemon\SaloonUtils\Logger\Stores\DatabaseLogger;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 

@@ -37,7 +37,7 @@ class MemoryLogger implements Logger
      */
     public function create(PendingRequest $request, Connector $connector): mixed
     {
-        $requestId = base64_encode(time() . mt_rand().'-'.$request->getRequest()->resolveEndpoint());
+        $requestId = base64_encode(time().mt_rand().'-'.$request->getRequest()->resolveEndpoint());
         $request->config()
             ->add('loggerRequestId', $requestId);
 
