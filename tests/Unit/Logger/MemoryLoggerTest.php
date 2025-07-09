@@ -29,7 +29,6 @@ class MemoryLoggerTest extends TestCaseDatabase
     }
 
     /**
-     * @return void
      * @throws \ReflectionException
      */
     #[Test]
