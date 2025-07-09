@@ -2,16 +2,14 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
 
-use HappyDemon\SaloonUtils\Logger\SaloonRequest;
 use HappyDemon\SaloonUtils\Logger\Stores\MemoryLogger;
-use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorProvidesLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
 use HappyDemon\SaloonUtils\Tests\TestCaseDatabase;
 use Illuminate\Cache\Repository;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\SimpleCache\InvalidArgumentException;
+use ReflectionClass;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Faking\MockClient;
@@ -19,12 +17,7 @@ use Saloon\Http\Faking\MockResponse;
 
 class MemoryLoggerTest extends TestCaseDatabase
 {
-    /**
-     * @return void
-     * @throws \ReflectionException
-     */
-    #[Test]
-    public function logger_inits_correctly(): void
+    protected function setUpFreshLoggerAndGetCache()
     {
         $logger = new MemoryLogger();
 
@@ -32,7 +25,16 @@ class MemoryLoggerTest extends TestCaseDatabase
             ->getProperty('store');
         $storeProperty->setAccessible(true);
 
-        $cache = $storeProperty->getValue($logger);
+        return $storeProperty->getValue($logger);
+    }
+    /**
+     * @return void
+     * @throws \ReflectionException
+     */
+    #[Test]
+    public function logger_inits_correctly(): void
+    {
+        $cache = $this->setUpFreshLoggerAndGetCache();
 
         $this->assertInstanceOf(
             Repository::class,
@@ -41,6 +43,14 @@ class MemoryLoggerTest extends TestCaseDatabase
         );
 
         $cache->put('test', 'x');
+
+        $anotherCache = $this->setUpFreshLoggerAndGetCache();
+
+        $this->assertEquals(
+            $cache->get('test'),
+            $anotherCache->get('test'),
+            'Initialising the logger a second time should not reset cache.'
+        );
     }
     /**
      * @throws FatalRequestException
