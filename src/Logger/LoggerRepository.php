@@ -11,7 +11,7 @@ use Saloon\Http\Connector;
 use Saloon\Http\PendingRequest;
 use Saloon\Http\Response;
 
-class LoggerService
+class LoggerRepository
 {
     protected Logger $logger;
 

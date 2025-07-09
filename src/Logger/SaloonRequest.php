@@ -4,6 +4,9 @@ namespace HappyDemon\SaloonUtils\Logger;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * This model manages request logs
+ */
 class SaloonRequest extends Model
 {
     protected $table = 'saloon_requests';

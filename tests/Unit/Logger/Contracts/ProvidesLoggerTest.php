@@ -2,7 +2,7 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Contracts;
 
-use HappyDemon\SaloonUtils\Logger\MemoryLogger;
+use HappyDemon\SaloonUtils\Logger\Stores\MemoryLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorProvidesLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;

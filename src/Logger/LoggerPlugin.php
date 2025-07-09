@@ -28,7 +28,7 @@ trait LoggerPlugin
             return;
         }
 
-        $logger = app(LoggerService::class);
+        $logger = app(LoggerRepository::class);
 
         // Ensure the logger is only set up once
         if (

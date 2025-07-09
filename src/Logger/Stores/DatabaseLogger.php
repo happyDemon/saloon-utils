@@ -1,8 +1,9 @@
 <?php
 
-namespace HappyDemon\SaloonUtils\Logger;
+namespace HappyDemon\SaloonUtils\Logger\Stores;
 
 use HappyDemon\SaloonUtils\Logger\Contracts\Logger;
+use HappyDemon\SaloonUtils\Logger\SaloonRequest;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Http\Connector;
 use Saloon\Http\PendingRequest;

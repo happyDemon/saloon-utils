@@ -2,7 +2,7 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
 
-use HappyDemon\SaloonUtils\Logger\LoggerService;
+use HappyDemon\SaloonUtils\Logger\LoggerRepository;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
 use HappyDemon\SaloonUtils\Tests\TestCase;
@@ -32,7 +32,7 @@ class LoggerServiceTest extends TestCase
     public function logs_request(): void
     {
         $this->mock(
-            LoggerService::class,
+            LoggerRepository::class,
             function (MockInterface $mock) {
                 $mock->makePartial();
                 $mock->shouldReceive('setUpLogger')->once();
@@ -55,7 +55,7 @@ class LoggerServiceTest extends TestCase
     public function logs_response(): void
     {
         $this->mock(
-            LoggerService::class,
+            LoggerRepository::class,
             function (MockInterface $mock) {
                 $mock->makePartial();
                 $mock->shouldReceive('logResponse')->once();

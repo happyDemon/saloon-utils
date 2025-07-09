@@ -3,8 +3,8 @@
 namespace HappyDemon\SaloonUtils;
 
 use HappyDemon\SaloonUtils\Logger\Contracts\Logger;
-use HappyDemon\SaloonUtils\Logger\DatabaseLogger;
-use HappyDemon\SaloonUtils\Logger\LoggerService;
+use HappyDemon\SaloonUtils\Logger\Stores\DatabaseLogger;
+use HappyDemon\SaloonUtils\Logger\LoggerRepository;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
@@ -39,7 +39,7 @@ class SaloonUtilsServiceProvider extends ServiceProvider
     {
         return [
             Logger::class,
-            LoggerService::class,
+            LoggerRepository::class,
         ];
     }
 

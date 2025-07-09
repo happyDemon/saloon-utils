@@ -1,8 +1,9 @@
 <?php
 
-namespace HappyDemon\SaloonUtils\Logger;
+namespace HappyDemon\SaloonUtils\Logger\Stores;
 
 use HappyDemon\SaloonUtils\Logger\Contracts\Logger;
+use HappyDemon\SaloonUtils\Logger\SaloonRequest;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -36,11 +37,12 @@ class MemoryLogger implements Logger
      */
     public function create(PendingRequest $request, Connector $connector): mixed
     {
-        $requestId = base64_encode(time().'-'.$request->getRequest()->resolveEndpoint());
+        $requestId = base64_encode(time() . mt_rand().'-'.$request->getRequest()->resolveEndpoint());
         $request->config()
             ->add('loggerRequestId', $requestId);
 
-        $log = [
+        $data = $this->store->get('requests', []);
+        $data[$requestId] = [
             'id' => $requestId,
             'connector' => get_class($connector),
             'endpoint' => $request->getRequest()->resolveEndpoint(),
@@ -49,9 +51,9 @@ class MemoryLogger implements Logger
             'request_body' => $request->body()?->all(),
             'sent_at' => now(),
         ];
-        $this->store->set('requests', array_merge($this->store->get('requests', []), [$requestId => $log]));
+        $this->store->set('requests', $data);
 
-        return $this->store->get($requestId);
+        return $data[$requestId];
     }
 
     /**

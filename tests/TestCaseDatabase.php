@@ -4,7 +4,7 @@ namespace Shyfter\Settings\Tests;
 
 namespace HappyDemon\SaloonUtils\Tests;
 
-use HappyDemon\SaloonUtils\Logger\DatabaseLogger;
+use HappyDemon\SaloonUtils\Logger\Stores\DatabaseLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Logger;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

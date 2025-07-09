@@ -2,7 +2,7 @@
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
 
-use HappyDemon\SaloonUtils\Logger\LoggerService;
+use HappyDemon\SaloonUtils\Logger\LoggerRepository;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
 use HappyDemon\SaloonUtils\Tests\TestCase;
@@ -55,7 +55,7 @@ class PluginTest extends TestCase
         );
 
         $this->assertSame(
-            LoggerService::class,
+            LoggerRepository::class,
             get_class($logService),
             'Configured logger service should be the correct class'
         );
