@@ -1,8 +1,8 @@
 # Changelog
 
-All notable changes to `Saloon Utils` will be documented in this file.
+All notable changes to `saloon-utils` will be documented in this file.
 
-## Version 1.0
+## Version 0.1.0
 
 ### Added
-- Everything
+- Request logger

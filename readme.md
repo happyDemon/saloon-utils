@@ -37,13 +37,13 @@ php artisan migrate
 
 ## Request logging
 
-By default, the database logger is used; however, a bundled logger is also available that stores requests in memory, which can be helpful for local debugging and testing. You can always register your own.
+By default, the database logger is used, however, a bundled logger is also available that stores requests in memory, which can be helpful for local debugging and testing. You can always register your own.
 
 Each logger implements `HappyDemon\SaloonUtils\Logger\Contracts\Logger`:
 - `HappyDemon\SaloonUtils\Logger\Stores\DatabaseLogger`
 - `HappyDemon\SaloonUtils\Logger\Stores\MemoryLogger`
 
-You can set the default logger by binding the `Logger` contract.
+You can set the default logger by binding the `Logger` contract in the service container.
 
 You are also able to define a specific logger [on a `Connector` class](tests/Saloon/Connectors/ConnectorProvidesLogger.php).
 
