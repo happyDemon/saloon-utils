@@ -6,8 +6,6 @@
 
 Batteries for [Saloon](https://docs.saloon.dev/).
 
-Take a look at [contributing.md](contributing.md) to see a to-do list.
-
 ## Installation
 
 Via Composer
