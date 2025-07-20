@@ -1,3 +1,4 @@
 # Table of contents
 
-* [Page](README.md)
+* [Saloon Utils](README.md)
+* [Request logging](request-logging.md)
