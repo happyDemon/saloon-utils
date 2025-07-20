@@ -111,6 +111,10 @@ php artisan migrate
 
 This logger will store each request in the `saloon_requests` table.
 
+{% hint style="danger" %}
+At this moment no records are pruned
+{% endhint %}
+
 ### Memory logger
 
 This logger can be helpful when debugging or running tests.\
