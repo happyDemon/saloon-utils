@@ -54,6 +54,12 @@ class SaloonRequest extends Model
         'completed_at',
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->setConnection(config('saloon-utils.logs.database_connection', config('database.default')));
+    }
+
     /**
      * Get the attributes that should be cast.
      *

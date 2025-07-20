@@ -20,7 +20,7 @@ use Saloon\Http\Response;
  */
 class MemoryLogger implements Logger
 {
-    use ConvertsResponseBody;
+    use ParsesRequestData;
 
     protected Repository $store;
 
@@ -52,9 +52,9 @@ class MemoryLogger implements Logger
             'request' => get_class($request->getRequest()),
             'method' => $request->getRequest()->getMethod(),
             'endpoint' => $request->getRequest()->resolveEndpoint(),
-            'request_headers' => $request->getRequest()->headers()->all(),
-            'request_query' => $request->getRequest()->query()->all(),
-            'request_body' => $request->body()?->all(),
+            'request_headers' => $this->convertsRequestHeaders($request->getRequest()->headers(), $request),
+            'request_query' => $this->convertsRequestHeaders($request->getRequest()->query(), $request),
+            'request_body' => $this->convertsRequestBody($request->body(), $request),
             'sent_at' => now(),
         ];
         $this->store->set('requests', $data);
@@ -71,7 +71,7 @@ class MemoryLogger implements Logger
     {
         $log = array_merge($log, [
             'response_headers' => $response->headers()->all(),
-            'response_body' => $this->convertResponseBody($response),
+            'response_body' => $this->convertResponseBody($response, $connector),
             'status_code' => $response->status(),
             'completed_at' => now(),
         ]);
