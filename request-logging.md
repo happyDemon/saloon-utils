@@ -27,7 +27,7 @@ In the `saloon-utils.php` config file you can also define which requests or conn
 \
 Any request or connector defined in this list is considered a hard-ignore, checks defined on the request or connector will be bypassed.
 
-{% @github-files/github-code-block url="https://github.com/happyDemon/saloon-utils/blob/main/config/saloon-utils.php" visible="false" fullWidth="true" %}
+{% @github-files/github-code-block url="https://github.com/happyDemon/saloon-utils/blob/main/config/saloon-utils.php" visible="false" fullWidth="false" %}
 
 ## Setup
 
