@@ -6,6 +6,8 @@
 
 Batteries for [Saloon](https://docs.saloon.dev/).
 
+- Request logging (to database by default or in-memory)
+
 ## Installation
 
 Via Composer
@@ -18,7 +20,6 @@ php artisan vendor:publish --tag saloon-utils.config
 ## Documentation
 
 You can find the [documentation here](https://happydemon.gitbook.io/saloon-utils/)
-
 ## Changelog
 
 Please refer to the [changelog](changelog.md) for more information on recent changes.

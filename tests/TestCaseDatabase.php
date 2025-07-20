@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Shyfter\Settings\Tests;
 
 namespace HappyDemon\SaloonUtils\Tests;

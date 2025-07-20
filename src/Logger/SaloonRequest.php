@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HappyDemon\SaloonUtils\Logger;
 
 use Illuminate\Database\Eloquent\Model;

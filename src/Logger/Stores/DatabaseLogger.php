@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HappyDemon\SaloonUtils\Logger\Stores;
 
 use HappyDemon\SaloonUtils\Logger\Contracts\Logger;

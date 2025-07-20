@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Contracts;
 
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorConditionalIgnore;
