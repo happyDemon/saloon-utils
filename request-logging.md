@@ -27,30 +27,7 @@ In the `saloon-utils.php` config file you can also define which requests or conn
 \
 Any request or connector defined in this list is considered a hard-ignore, checks defined on the request or connector will be bypassed.
 
-```php
-<?php
-
-declare(strict_types=1);
-
-return [
-    'logs' => [
-        'enabled' => env('SALOON_REQUEST_LOGS', true),
-        // Pruning
-        'keep_for_days' => env('SALOON_REQUEST_PRUNE', 14),
-        'ignore' => [
-            'connectors' => [
-                // All requests through this connector will be ignore
-                ForgeConnector::class
-            ],
-            'requests' => [
-                // This specific request will be ignored
-                GetServersRequest::class
-            ],
-        ],
-    ],
-];
-
-```
+{% @github-files/github-code-block url="https://github.com/happyDemon/saloon-utils/blob/main/config/saloon-utils.php" visible="false" fullWidth="true" %}
 
 ## Setup
 
