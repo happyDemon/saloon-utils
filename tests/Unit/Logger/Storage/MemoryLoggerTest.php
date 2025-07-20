@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
+namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Storage;
 
 use HappyDemon\SaloonUtils\Logger\LoggerRepository;
 use HappyDemon\SaloonUtils\Logger\Stores\MemoryLogger;
@@ -10,8 +10,9 @@ use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorFatal;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorProvidesLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Logger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
-use HappyDemon\SaloonUtils\Tests\TestCaseDatabase;
+use HappyDemon\SaloonUtils\Tests\TestCase;
 use Illuminate\Cache\Repository;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\SimpleCache\InvalidArgumentException;
 use ReflectionClass;
@@ -21,7 +22,7 @@ use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
-class MemoryLoggerTest extends TestCaseDatabase
+class MemoryLoggerTest extends TestCase implements StorageLoggerInterface
 {
     protected function setUpFreshLoggerAndGetCache()
     {
@@ -32,6 +33,22 @@ class MemoryLoggerTest extends TestCaseDatabase
         $storeProperty->setAccessible(true);
 
         return $storeProperty->getValue($logger);
+    }
+
+    /**
+     * @throws FatalRequestException
+     * @throws RequestException
+     */
+    protected function doSuccessfulRequest(?string $body = null): void
+    {
+        $connector = app(ConnectorProvidesLogger::class);
+        $mockClient = new MockClient([
+            GoogleSearchRequest::class => MockResponse::make($body ?: '', 200),
+        ]);
+        $connector->withMockClient($mockClient);
+
+        // Send the request
+        $connector->search('saloon');
     }
 
     /**
@@ -67,14 +84,7 @@ class MemoryLoggerTest extends TestCaseDatabase
     #[Test]
     public function logs_response(): void
     {
-        $connector = app(ConnectorProvidesLogger::class);
-        $mockClient = new MockClient([
-            GoogleSearchRequest::class => MockResponse::make('', 200),
-        ]);
-        $connector->withMockClient($mockClient);
-
-        // Send the request
-        $connector->search('saloon');
+        $this->doSuccessfulRequest();
 
         $logger = app(MemoryLogger::class);
         $this->assertCount(1, $logger->logs());
@@ -93,7 +103,7 @@ class MemoryLoggerTest extends TestCaseDatabase
      * @throws InvalidArgumentException
      */
     #[Test]
-    public function logs_multiple(): void
+    public function logs_multiple_responses(): void
     {
         $connector = app(ConnectorProvidesLogger::class);
         $mockClient = new MockClient([
@@ -142,5 +152,36 @@ class MemoryLoggerTest extends TestCaseDatabase
             $log = $repository->logFatalError($e, ['id' => 'request'], $connector);
             $this->assertIsArray($log);
         }
+    }
+
+    public static function bodySizes(): array
+    {
+        return [
+            'exceeds limit' => [
+                'sent' => '123456789101112',
+                'stored' => 'too large',
+            ],
+            'within limits' => [
+                'sent' => 'data',
+                'stored' => 'data',
+            ],
+        ];
+    }
+
+    /**
+     * @throws FatalRequestException
+     * @throws RequestException
+     * @throws InvalidArgumentException
+     */
+    #[Test]
+    #[DataProvider('bodySizes')]
+    public function response_body_size_is_respected(string $sent, string $stored): void
+    {
+        config()->set('saloon-utils.logs.response_max_length', 10);
+        $this->doSuccessfulRequest($sent);
+
+        $logs = (new MemoryLogger)->logs();
+
+        $this->assertEquals($stored, $logs[0]['response_body']);
     }
 }

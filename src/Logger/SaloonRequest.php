@@ -4,12 +4,30 @@ declare(strict_types=1);
 
 namespace HappyDemon\SaloonUtils\Logger;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * This model manages request logs
+ *
+ * @property int $id
+ * @property string $connector The fully qualified class name of the connector
+ * @property string $request The fully qualified class name of the request
+ * @property string $method The HTTP method used
+ * @property string $endpoint The endpoint that was called
+ * @property array $request_headers The headers sent with the request
+ * @property array $request_query The query parameters sent with the request
+ * @property array $request_body The body sent with the request
+ * @property array $response_headers The headers received in the response
+ * @property array $response_body The body received in the response
+ * @property int $status_code The HTTP status code received in the response
+ * @property Carbon $completed_at When the request was completed
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ *
+ * @mixin Builder
  */
 class SaloonRequest extends Model
 {
@@ -58,7 +76,7 @@ class SaloonRequest extends Model
      */
     public function prunable(): Builder
     {
-        return static::where(
+        return $this->newQuery()->where(
             'created_at',
             '<=',
             now()->startOfDay()->subDays(config('saloon-utils.logs.keep_for_days', 14))

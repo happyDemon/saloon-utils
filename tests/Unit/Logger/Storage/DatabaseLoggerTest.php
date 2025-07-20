@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
+namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Storage;
 
 use HappyDemon\SaloonUtils\Logger\SaloonRequest;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorFatal;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
 use HappyDemon\SaloonUtils\Tests\TestCaseDatabase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Saloon\Config;
 use Saloon\Exceptions\Request\FatalRequestException;
@@ -16,8 +17,24 @@ use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
-class DatabaseLoggerTest extends TestCaseDatabase
+class DatabaseLoggerTest extends TestCaseDatabase implements StorageLoggerInterface
 {
+    /**
+     * @throws FatalRequestException
+     * @throws RequestException
+     */
+    protected function doSuccessfulRequest(?string $responseBody = null): void
+    {
+        $connector = app(ConnectorGeneric::class);
+        $mockClient = new MockClient([
+            GoogleSearchRequest::class => MockResponse::make($responseBody ?: '', 200),
+        ]);
+        $connector->withMockClient($mockClient);
+
+        // Send the request
+        $connector->search('saloon');
+    }
+
     /**
      * @throws FatalRequestException
      * @throws RequestException
@@ -25,19 +42,12 @@ class DatabaseLoggerTest extends TestCaseDatabase
     #[Test]
     public function logs_response(): void
     {
-        $connector = app(ConnectorGeneric::class);
-        $mockClient = new MockClient([
-            GoogleSearchRequest::class => MockResponse::make('', 200),
-        ]);
-        $connector->withMockClient($mockClient);
-
-        // Send the request
-        $connector->search('saloon');
+        $this->doSuccessfulRequest();
 
         $this->assertDatabaseCount((new SaloonRequest)->getTable(), 1);
 
         /** @var SaloonRequest $log */
-        $log = SaloonRequest::first();
+        $log = SaloonRequest::query()->first();
         $request = new GoogleSearchRequest('saloon');
 
         $this->assertEquals(200, $log->status_code);
@@ -53,7 +63,7 @@ class DatabaseLoggerTest extends TestCaseDatabase
      * @throws RequestException
      */
     #[Test]
-    public function logs_multiple(): void
+    public function logs_multiple_responses(): void
     {
         $connector = app(ConnectorGeneric::class);
         $mockClient = new MockClient([
@@ -70,14 +80,31 @@ class DatabaseLoggerTest extends TestCaseDatabase
 
             // verify the data matches
             $request = new GoogleSearchRequest($search);
-            $log = $model->get()[$i];
 
-            $this->assertEquals(200, $log->status_code, 'status code should be 200');
-            $this->assertEquals($request->query()->all(), $log->request_query, 'Query parameters should match');
-            $this->assertEquals($request->resolveEndpoint(), $log->endpoint, 'Endpoint should have set correctly');
+            /** @var SaloonRequest $log */
+            $log = $model->newQuery()->get()[$i];
+
+            $this->assertEquals(
+                200,
+                $log->status_code,
+                'status code should be 200'
+            );
+            $this->assertEquals(
+                $request->query()->all(),
+                $log->request_query,
+                'Query parameters should match'
+            );
+            $this->assertEquals(
+                $request->resolveEndpoint(),
+                $log->endpoint,
+                'Endpoint should have set correctly'
+            );
         }
     }
 
+    /**
+     * @throws RequestException
+     */
     #[Test]
     public function handles_fatal_error_correctly(): void
     {
@@ -92,12 +119,44 @@ class DatabaseLoggerTest extends TestCaseDatabase
         } catch (FatalRequestException $e) {
             $this->assertDatabaseCount((new SaloonRequest)->getTable(), 1);
 
-            $log = SaloonRequest::first();
+            /** @var SaloonRequest $log */
+            $log = SaloonRequest::query()->first();
             $request = new GoogleSearchRequest('saloon');
 
             $this->assertEquals(418, $log->status_code);
             $this->assertEquals($request->query()->all(), $log->request_query);
             $this->assertEquals($request->resolveEndpoint(), $log->endpoint);
         }
+    }
+
+    public static function bodySizes(): array
+    {
+        return [
+            'exceeds limit' => [
+                'sent' => '123456789101112',
+                'stored' => 'too large',
+            ],
+            'within limits' => [
+                'sent' => 'data',
+                'stored' => 'data',
+            ],
+        ];
+    }
+
+    /**
+     * @throws FatalRequestException
+     * @throws RequestException
+     */
+    #[Test]
+    #[DataProvider('bodySizes')]
+    public function response_body_size_is_respected(string $sent, string $stored): void
+    {
+        config()->set('saloon-utils.logs.response_max_length', 10);
+        $this->doSuccessfulRequest($sent);
+
+        /** @var SaloonRequest $log */
+        $log = SaloonRequest::query()->first();
+
+        $this->assertEquals($stored, $log->response_body);
     }
 }

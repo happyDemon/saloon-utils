@@ -78,7 +78,7 @@ class LoggerRepository
      */
     public function logFatalError(FatalRequestException $response, mixed $log, Connector $connector): mixed
     {
-        // Initial request was not logged
+        // The initial request was not logged
         if (empty($log)) {
             return null;
         }

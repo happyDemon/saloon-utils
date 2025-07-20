@@ -20,6 +20,8 @@ use Saloon\Http\Response;
  */
 class MemoryLogger implements Logger
 {
+    use ConvertsResponseBody;
+
     protected Repository $store;
 
     public function __construct()
@@ -69,7 +71,7 @@ class MemoryLogger implements Logger
     {
         $log = array_merge($log, [
             'response_headers' => $response->headers()->all(),
-            'response_body' => $response->body(),
+            'response_body' => $this->convertResponseBody($response),
             'status_code' => $response->status(),
             'completed_at' => now(),
         ]);

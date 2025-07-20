@@ -13,6 +13,8 @@ use Saloon\Http\Response;
 
 class DatabaseLogger implements Logger
 {
+    use ConvertsResponseBody;
+
     public function create(PendingRequest $request, Connector $connector): mixed
     {
         $log = SaloonRequest::create([
@@ -35,7 +37,7 @@ class DatabaseLogger implements Logger
     {
         $log->update([
             'response_headers' => $response->headers()->all(),
-            'response_body' => $response->body(),
+            'response_body' => $this->convertResponseBody($response),
             'status_code' => $response->status(),
             'completed_at' => now(),
         ]);
