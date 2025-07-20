@@ -297,7 +297,7 @@ class ForgeConnector extends Connector implements RedactsRequests
                 '*',
             ],
             Redactor::BODY->value => [
-                // dot path syntact supported
+                // dot path syntax supported
                 'data.password',
             ],
             Redactor::QUERY->value => [
