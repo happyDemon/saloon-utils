@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
 
 use HappyDemon\SaloonUtils\Logger\SaloonRequest;
+use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorFatal;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
 use HappyDemon\SaloonUtils\Tests\TestCaseDatabase;
 use PHPUnit\Framework\Attributes\Test;
+use Saloon\Config;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Faking\MockClient;
@@ -69,6 +71,29 @@ class DatabaseLoggerTest extends TestCaseDatabase
             $this->assertEquals(200, $log->status_code, 'status code should be 200');
             $this->assertEquals($request->query()->all(), $log->request_query, 'Query parameters should match');
             $this->assertEquals($request->resolveEndpoint(), $log->endpoint, 'Endpoint should have set correctly');
+        }
+    }
+
+    #[Test]
+    public function handles_fatal_error_correctly(): void
+    {
+        Config::clearGlobalMiddleware();
+        $connector = app(ConnectorFatal::class);
+
+        try {
+            // Send the request
+            $connector->search('saloon');
+
+            $this->fail('Should have thrown a FatalRequestException');
+        } catch (FatalRequestException $e) {
+            $this->assertDatabaseCount((new SaloonRequest)->getTable(), 1);
+
+            $log = SaloonRequest::first();
+            $request = new GoogleSearchRequest('saloon');
+
+            $this->assertEquals(418, $log->status_code);
+            $this->assertEquals($request->query()->all(), $log->request_query);
+            $this->assertEquals($request->resolveEndpoint(), $log->endpoint);
         }
     }
 }

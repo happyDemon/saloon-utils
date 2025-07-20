@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HappyDemon\SaloonUtils\Logger;
 
 use HappyDemon\SaloonUtils\Logger\Contracts\ConditionallyIgnoreLogs;
@@ -32,6 +34,13 @@ class LoggerRepository
     public function logRequest(PendingRequest $request, Connector $connector): mixed
     {
         $originalRequest = $request->getRequest();
+
+        if (
+            in_array(get_class($connector), config('saloon-utils.logs.ignore.connectors', []), true) ||
+            in_array(get_class($originalRequest), config('saloon-utils.logs.ignore.requests', []), true)
+        ) {
+            return null;
+        }
 
         if (
             // The request log should not be stored

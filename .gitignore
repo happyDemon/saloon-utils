@@ -5,3 +5,5 @@ phpunit.xml.bak
 /.phpunit.cache/
 /.idea
 composer.lock
+/coverage
+clover.xml

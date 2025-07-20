@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
 
+use HappyDemon\SaloonUtils\Logger\LoggerRepository;
 use HappyDemon\SaloonUtils\Logger\Stores\MemoryLogger;
+use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorFatal;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorProvidesLogger;
+use HappyDemon\SaloonUtils\Tests\Saloon\Logger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
 use HappyDemon\SaloonUtils\Tests\TestCaseDatabase;
 use Illuminate\Cache\Repository;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\SimpleCache\InvalidArgumentException;
 use ReflectionClass;
+use Saloon\Config;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Faking\MockClient;
@@ -113,5 +117,30 @@ class MemoryLoggerTest extends TestCaseDatabase
             $this->assertEquals($request->resolveEndpoint(), $log['endpoint'], 'Endpoint should have set correctly');
         }
 
+    }
+
+    #[Test]
+    public function handles_fatal_error_correctly(): void
+    {
+        Config::clearGlobalMiddleware();
+        $this->app->bind(Logger::class, fn () => new MemoryLogger);
+
+        /** @var LoggerRepository $repository */
+        $repository = app(LoggerRepository::class);
+        $connector = app(ConnectorFatal::class);
+        $repository->setUpLogger($connector);
+
+        try {
+            $connector->search('saloon');
+            $this->fail('Should have thrown a FatalRequestException');
+        } catch (FatalRequestException $e) {
+            $this->assertNull(
+                $repository->logFatalError($e, null, $connector),
+                'No log should return a null response'
+            );
+
+            $log = $repository->logFatalError($e, ['id' => 'request'], $connector);
+            $this->assertIsArray($log);
+        }
     }
 }
