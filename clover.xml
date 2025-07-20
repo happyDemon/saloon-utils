@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1752422399">
-  <project timestamp="1752422399" name="Clover Coverage">
+<coverage generated="1753014167">
+  <project timestamp="1753014167" name="Clover Coverage">
     <file name="/home/runner/work/saloon-utils/saloon-utils/src/Logger/Contracts/ConditionallyIgnoreLogs.php">
       <metrics loc="14" ncloc="11" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
