@@ -156,42 +156,7 @@ Ensure your custom logger implements the `Logger` interface.
 Be sure to make use of the `HappyDemon\SaloonUtils\Logger\Stores\ParsesRequestData` trait when implementing your own logger. It provides helper methods for data conversion and redaction.
 {% endhint %}
 
-```php
-<?php
-
-namespace HappyDemon\SaloonUtils\Logger\Contracts;
-
-use Saloon\Exceptions\Request\FatalRequestException;
-use Saloon\Http\Connector;
-use Saloon\Http\PendingRequest;
-use Saloon\Http\Response;
-
-interface Logger
-{
-    /**
-     * Just before a request is sent
-     * Returns log data (null if none can be created)
-     */
-    public function create(PendingRequest $request, Connector $connector): mixed;
-
-    /**
-     * Right after a request was sent.
-     *
-     * @param  mixed  $log  The log that was returned from $this->create()
-     * @return mixed The updated log
-     */
-    public function updateWithResponse(mixed $log, Response $response, Connector $connector): mixed;
-
-    /**
-     * In case there was a fatal error (due to Saloon not being able to connect for example).
-     * 
-     * @param  mixed  $log  The log that was returned from $this->create()
-     * @return mixed The updated log
-     */
-    public function updateWithFatalError(mixed $log, FatalRequestException $errorResponse, Connector $connector): mixed;
-}
-
-```
+{% @github-files/github-code-block url="https://github.com/happyDemon/saloon-utils/blob/main/src/Logger/Contracts/Logger.php" visible="false" %}
 
 ## Ignoring requests
 
