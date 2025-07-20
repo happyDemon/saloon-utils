@@ -20,7 +20,7 @@ interface Logger
     /**
      * Right after a request was sent.
      *
-     * @param mixed $log The log that was returned from $this->create()
+     * @param  mixed  $log  The log that was returned from $this->create()
      * @return mixed The updated log
      */
     public function updateWithResponse(mixed $log, Response $response, Connector $connector): mixed;
@@ -28,7 +28,7 @@ interface Logger
     /**
      * In case there was a fatal error (due to Saloon not being able to connect, for example).
      *
-     * @param mixed $log The log that was returned from $this->create()
+     * @param  mixed  $log  The log that was returned from $this->create()
      * @return mixed The updated log
      */
     public function updateWithFatalError(mixed $log, FatalRequestException $errorResponse, Connector $connector): mixed;
