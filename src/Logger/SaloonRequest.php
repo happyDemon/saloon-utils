@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace HappyDemon\SaloonUtils\Logger;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -11,6 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SaloonRequest extends Model
 {
+    use MassPrunable;
+
     protected $table = 'saloon_requests';
 
     /**
@@ -47,5 +51,17 @@ class SaloonRequest extends Model
             'response_headers' => 'array',
             'response_body' => 'array',
         ];
+    }
+
+    /**
+     * Get the prunable model query.
+     */
+    public function prunable(): Builder
+    {
+        return static::where(
+            'created_at',
+            '<=',
+            now()->startOfDay()->subDays(config('saloon-utils.logs.keep_for_days', 14))
+        );
     }
 }
