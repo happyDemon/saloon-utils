@@ -8,14 +8,47 @@ Keep track of (all) the requests a connector executes.
 
 Log those requests/responses to your database, keep the logs in-memory or bring your own storage implementation.
 
-## Setup
+## Configuration
 
-You can, globally, enable or disable request logging:
+<kbd>.env</kbd> configuration:
 
 ```
 # If not defined, defaults to true
 SALOON_REQUEST_LOGS=false
+
+# If not defined, defaults to 14 (how many days should requests be stored in the db)
+SALOON_REQUEST_PRUNE=14
 ```
+
+In the `saloon-utils.php` config file you can also define which requests or connectors will be ignored. \
+Any request or connector defined in this list is considered a hard-ignore, checks defined on the request or connector will be bypassed.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+return [
+    'logs' => [
+        'enabled' => env('SALOON_REQUEST_LOGS', true),
+        // Pruning
+        'keep_for_days' => env('SALOON_REQUEST_PRUNE', 14),
+        'ignore' => [
+            'connectors' => [
+                // All requests through this connector will be ignore
+                ForgeConnector::class
+            ],
+            'requests' => [
+                // This specific request will be ignored
+                GetServersRequest::class
+            ],
+        ],
+    ],
+];
+
+```
+
+## Setup
 
 Ensure your [connector](https://docs.saloon.dev/the-basics/connectors) uses the `LoggerPlugin` trait.
 
@@ -42,7 +75,7 @@ Without any other configuration all requests this connector executes will be sto
 
 #### Globally
 
-If you want to set the default logger you will have to bind an instance in the service container.
+If you want to replace the default logger you will have to bind an instance in the service container.
 
 ```php
 <?php
@@ -111,9 +144,13 @@ php artisan migrate
 
 This logger will store each request in the `saloon_requests` table.
 
-{% hint style="danger" %}
-At this moment no records are pruned
+{% hint style="info" %}
+Be sure to schedule model pruning daily with a cronjob
 {% endhint %}
+
+```php
+Schedule::command('model:prune')->daily();
+```
 
 ### Memory logger
 
@@ -192,7 +229,9 @@ class GetServersRequest extends Request implements DoNotLogRequest
 ```
 
 If you want more fine-grained control over which requests should be logged, you can implement `ConditionallyIgnoreLogs` on your `Connector` or `Request` class. \
-This contract allows you to implement your any logic to prevent a request from being logged by returning `false`.
+
+
+This contract allows you to implement any logic to prevent a request from being logged by returning `false`.
 
 ```php
 <?php
