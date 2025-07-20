@@ -153,7 +153,8 @@ Be sure to schedule model pruning daily with a cronjob
 {% endhint %}
 
 ```php
-Schedule::command('model:prune')->daily();
+use HappyDemon\SaloonUtils\Logger\SaloonRequest;
+Schedule::command('model:prune', ['--model' => SaloonRequest::class])->daily();
 ```
 
 ### Memory logger
