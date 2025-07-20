@@ -167,7 +167,7 @@ interface Logger
 
 ## Ignoring requests
 
-You can ensure individual requests are ignored by implementing `DoNotLogRequest` on the `Request` class.
+You can ensure individual requests are not recorded by implementing `DoNotLogRequest` on the `Request` class.
 
 ```php
 <?php
