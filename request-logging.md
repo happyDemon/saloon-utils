@@ -16,11 +16,15 @@ Log those requests/responses to your database, keep the logs in-memory or bring 
 # If not defined, defaults to true
 SALOON_REQUEST_LOGS=false
 
+# If not set, the default database connection will be used
+SALOON_REQUEST_DB_CONNECTION=
+
 # If not defined, defaults to 14 (how many days should requests be stored in the db)
 SALOON_REQUEST_PRUNE=14
 ```
 
 In the `saloon-utils.php` config file you can also define which requests or connectors will be ignored. \
+\
 Any request or connector defined in this list is considered a hard-ignore, checks defined on the request or connector will be bypassed.
 
 ```php
@@ -73,7 +77,7 @@ Without any other configuration all requests this connector executes will be sto
 
 ## Configuring a logger
 
-#### Globally
+### Globally
 
 If you want to replace the default logger you will have to bind an instance in the service container.
 
@@ -102,7 +106,7 @@ class AppServiceProvider extends ServiceProvider
 
 ```
 
-#### Locally
+### Locally
 
 If you have a special case for a specific connector, you could define which logger to use on the connector itself:
 
@@ -168,7 +172,11 @@ app(MemoryLogger::class)->logs();
 
 You can easily build your own logger and set it as the default.
 
-Ensure your custom logger implements the `Logger` interface:
+Ensure your custom logger implements the `Logger` interface.
+
+{% hint style="info" %}
+Be sure to make use of the `HappyDemon\SaloonUtils\Logger\Stores\ParsesRequestData` trait when implementing your own logger. It provides helper methods for data conversion and redaction.
+{% endhint %}
 
 ```php
 <?php
@@ -184,22 +192,23 @@ interface Logger
 {
     /**
      * Just before a request is sent
+     * Returns log data (null if none can be created)
      */
     public function create(PendingRequest $request, Connector $connector): mixed;
 
     /**
      * Right after a request was sent.
      *
-     * @param  mixed  $log  The log that was returned from $this->>create())
-     * @return mixed The log
+     * @param  mixed  $log  The log that was returned from $this->create()
+     * @return mixed The updated log
      */
     public function updateWithResponse(mixed $log, Response $response, Connector $connector): mixed;
 
     /**
      * In case there was a fatal error (due to Saloon not being able to connect for example).
      * 
-     * @param  mixed  $log  The log that was returned from $this->>create())
-     * @return mixed The log
+     * @param  mixed  $log  The log that was returned from $this->create()
+     * @return mixed The updated log
      */
     public function updateWithFatalError(mixed $log, FatalRequestException $errorResponse, Connector $connector): mixed;
 }
@@ -252,6 +261,48 @@ class ForgeConnector extends Connector implements ConditionallyIgnoreLogs
     public function shouldLogRequest(PendingRequest $pendingRequest): bool
     {
         return true;
+    }
+}
+```
+
+## Redacting data
+
+There are times you don't want sensitive data logged.
+
+Ensure either your `Request` or `Connector` implements the `RedactsRequests` contract and define what you want to redact:
+
+```php
+<?php
+
+use HappyDemon\SaloonUtils\Logger\Contracts\RedactsRequests;
+use HappyDemon\SaloonUtils\Logger\Enums\Redactor;
+use HappyDemon\SaloonUtils\Logger\LoggerPlugin;
+use Saloon\Http\Connector;
+
+class ForgeConnector extends Connector implements RedactsRequests
+{
+    use LoggerPlugin;
+    
+    public function resolveBaseUrl(): string
+    {
+        return 'https://forge.laravel.com/api/v1';
+    }
+    
+    public function shouldRedact(): array
+    {
+        return [
+            Redactor::HEADERS->value => [
+                // redact all
+                '*',
+            ],
+            Redactor::BODY->value => [
+                // dot path syntact supported
+                'data.password',
+            ],
+            Redactor::QUERY->value => [
+                'api_token',
+            ],
+        ];
     }
 }
 ```
