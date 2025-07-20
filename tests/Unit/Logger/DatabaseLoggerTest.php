@@ -36,10 +36,14 @@ class DatabaseLoggerTest extends TestCaseDatabase
 
         $this->assertDatabaseCount((new SaloonRequest)->getTable(), 1);
 
+        /** @var SaloonRequest $log */
         $log = SaloonRequest::first();
         $request = new GoogleSearchRequest('saloon');
 
         $this->assertEquals(200, $log->status_code);
+        $this->assertEquals(ConnectorGeneric::class, $log->connector);
+        $this->assertEquals(GoogleSearchRequest::class, $log->request);
+        $this->assertEquals($request->getMethod()->value, $log->method);
         $this->assertEquals($request->query()->all(), $log->request_query);
         $this->assertEquals($request->resolveEndpoint(), $log->endpoint);
     }

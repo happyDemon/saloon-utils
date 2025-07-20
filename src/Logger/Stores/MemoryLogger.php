@@ -47,6 +47,8 @@ class MemoryLogger implements Logger
         $data[$requestId] = [
             'id' => $requestId,
             'connector' => get_class($connector),
+            'request' => get_class($request->getRequest()),
+            'method' => $request->getRequest()->getMethod(),
             'endpoint' => $request->getRequest()->resolveEndpoint(),
             'request_headers' => $request->getRequest()->headers()->all(),
             'request_query' => $request->getRequest()->query()->all(),

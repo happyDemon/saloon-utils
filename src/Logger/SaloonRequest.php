@@ -20,6 +20,8 @@ class SaloonRequest extends Model
      */
     protected $fillable = [
         'connector',
+        'request',
+        'method',
         'endpoint',
         'request_headers',
         'request_query',
