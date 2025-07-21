@@ -229,11 +229,11 @@ class ForgeConnector extends Connector implements ConditionallyIgnoreLogs
 }
 ```
 
-## Redacting data
+## Redacting request data
 
 There are times you don't want sensitive data logged.
 
-Ensure either your `Request` or `Connector` implements the `RedactsRequests` contract and define what you want to redact:
+Ensure either your `Request` or `Connector` implements the `RedactsRequests` contract and defines what you want to redact:
 
 ```php
 <?php
