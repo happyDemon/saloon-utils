@@ -2,6 +2,12 @@
 
 All notable changes to `saloon-utils` will be documented in this file.
 
+## Version 0.3.1
+
+### Changed
+- Switched middleware registration to invokable classes to prevent memory leaks in queues/octane
+
+
 ## Version 0.3.0
 
 ### Added
