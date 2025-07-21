@@ -110,7 +110,7 @@ class MemoryLogger implements Logger
      */
     public function delete(mixed $log, PendingRequest $request): void
     {
-        if (!is_array($log)) {
+        if (! is_array($log)) {
             return;
         }
 

@@ -80,6 +80,7 @@ class LoggerRepository
             )
         ) {
             $this->logger->delete($log, $response->getPendingRequest());
+
             return null;
         }
 

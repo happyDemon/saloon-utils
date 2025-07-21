@@ -191,7 +191,6 @@ class LoggerRepositoryTest extends TestCase
         );
     }
 
-
     public static function data_provider_ignore_connector(): array
     {
         return [
