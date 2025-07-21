@@ -27,7 +27,7 @@ In the `saloon-utils.php` config file you can also define which requests or conn
 \
 Any request or connector defined in this list is considered a hard-ignore, checks defined on the request or connector will be bypassed.
 
-{% @github-files/github-code-block url="https://github.com/happyDemon/saloon-utils/blob/main/config/saloon-utils.php" visible="false" fullWidth="false" %}
+{% @github-files/github-code-block url="https://github.com/happyDemon/saloon-utils/blob/main/config/saloon-utils.php" visible="true" fullWidth="false" %}
 
 ## Setup
 
@@ -156,7 +156,7 @@ Ensure your custom logger implements the `Logger` interface.
 Be sure to make use of the `HappyDemon\SaloonUtils\Logger\Stores\ParsesRequestData` trait when implementing your own logger. It provides helper methods for data conversion and redaction.
 {% endhint %}
 
-{% @github-files/github-code-block url="https://github.com/happyDemon/saloon-utils/blob/main/src/Logger/Contracts/Logger.php" visible="false" %}
+{% @github-files/github-code-block url="https://github.com/happyDemon/saloon-utils/blob/main/src/Logger/Contracts/Logger.php" visible="true" %}
 
 ## Ignoring requests
 
