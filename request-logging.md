@@ -160,6 +160,28 @@ Be sure to make use of the `HappyDemon\SaloonUtils\Logger\Stores\ParsesRequestDa
 
 ## Ignoring requests
 
+It might be smart to only log requests that were not successful (where the status code is not in 200).
+
+You can do this by adding the `OnlyLogErrorRequest` contract to a `Request` or `Connector`.
+
+```php
+<?php
+
+use HappyDemon\SaloonUtils\Logger\Contracts\OnlyLogErrorRequest;
+use Saloon\Enums\Method;
+use Saloon\Http\Request;
+
+class GetServersRequest extends Request implements OnlyLogErrorRequest
+{
+    protected Method $method = Method::GET;
+
+    public function resolveEndpoint(): string
+    {
+        return '/servers';
+    }
+}
+```
+
 You can ensure individual requests are not recorded by implementing `DoNotLogRequest` on the `Request` class.
 
 ```php
@@ -180,8 +202,7 @@ class GetServersRequest extends Request implements DoNotLogRequest
 }
 ```
 
-If you want more fine-grained control over which requests should be logged, you can implement `ConditionallyIgnoreLogs` on your `Connector` or `Request` class. \
-
+If you want more fine-grained control over which requests should be logged, you can implement `ConditionallyIgnoreLogs` on your `Connector` or `Request` class.&#x20;
 
 This contract allows you to implement any logic to prevent a request from being logged by returning `false`.
 
