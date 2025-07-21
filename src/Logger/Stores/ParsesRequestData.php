@@ -95,11 +95,15 @@ trait ParsesRequestData
     protected function redactDataFromPayload($payload, array $redactKeys): mixed
     {
         if (in_array('*', $redactKeys, true)) {
-            return null;
+            return 'redacted';
         }
 
         if (is_array($payload)) {
-            Arr::forget($payload, $redactKeys);
+            foreach ($redactKeys as $key) {
+                if (Arr::has($payload, $key)) {
+                    Arr::set($payload, $key, 'redacted');
+                }
+            }
         }
 
         return $payload;

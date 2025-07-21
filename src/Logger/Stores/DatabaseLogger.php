@@ -23,7 +23,7 @@ class DatabaseLogger implements Logger
             'method' => $request->getRequest()->getMethod(),
             'endpoint' => $request->getRequest()->resolveEndpoint(),
             'request_headers' => $this->convertsRequestHeaders($request->getRequest()->headers(), $request),
-            'request_query' => $this->convertsRequestHeaders($request->getRequest()->query(), $request),
+            'request_query' => $this->convertsRequestQueryParameters($request->getRequest()->query(), $request),
             'request_body' => $this->convertsRequestBody($request->body(), $request),
         ]);
 

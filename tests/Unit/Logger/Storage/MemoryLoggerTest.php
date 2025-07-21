@@ -4,14 +4,23 @@ declare(strict_types=1);
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Storage;
 
+use HappyDemon\SaloonUtils\Logger\Enums\Redactor;
 use HappyDemon\SaloonUtils\Logger\LoggerRepository;
 use HappyDemon\SaloonUtils\Logger\Stores\MemoryLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorFatal;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorProvidesLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Logger;
+use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRedactRequest;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
+use HappyDemon\SaloonUtils\Tests\Saloon\Requests\Redaction\RedactBodyAllRequest;
+use HappyDemon\SaloonUtils\Tests\Saloon\Requests\Redaction\RedactBodyRequest;
+use HappyDemon\SaloonUtils\Tests\Saloon\Requests\Redaction\RedactHeadersAllRequest;
+use HappyDemon\SaloonUtils\Tests\Saloon\Requests\Redaction\RedactHeadersRequest;
+use HappyDemon\SaloonUtils\Tests\Saloon\Requests\Redaction\RedactQueryAllRequest;
+use HappyDemon\SaloonUtils\Tests\Saloon\Requests\Redaction\RedactQueryRequest;
 use HappyDemon\SaloonUtils\Tests\TestCase;
 use Illuminate\Cache\Repository;
+use Illuminate\Support\Arr;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\SimpleCache\InvalidArgumentException;
@@ -183,5 +192,96 @@ class MemoryLoggerTest extends TestCase implements StorageLoggerInterface
         $logs = (new MemoryLogger)->logs();
 
         $this->assertEquals($stored, $logs[0]['response_body']);
+    }
+
+    public static function redacted_provider(): array
+    {
+        return [
+            'header' => [
+                'type' => Redactor::HEADERS->value,
+                'redact' => RedactHeadersRequest::class,
+            ],
+            'all headers' => [
+                'type' => Redactor::HEADERS->value,
+                'redact' => RedactHeadersAllRequest::class,
+                'all' => true,
+            ],
+            'query' => [
+                'type' => Redactor::QUERY->value,
+                'redact' => RedactQueryRequest::class,
+            ],
+            'all query parameters' => [
+                'type' => Redactor::QUERY->value,
+                'redact' => RedactQueryAllRequest::class,
+                'all' => true,
+            ],
+            'body' => [
+                'type' => Redactor::BODY->value,
+                'redact' => RedactBodyRequest::class,
+            ],
+            'body all' => [
+                'type' => Redactor::BODY->value,
+                'redact' => RedactBodyAllRequest::class,
+                'all' => true,
+            ],
+        ];
+    }
+
+    #[DataProvider('redacted_provider')]
+    #[Test]
+    public function redaction_is_applied(string $type, string $redact, bool $all = false): void
+    {
+        $connector = app(ConnectorProvidesLogger::class);
+        $mockClient = new MockClient([
+            $redact => MockResponse::make('', 200),
+        ]);
+        $connector->withMockClient($mockClient);
+        $logger = app(MemoryLogger::class);
+
+        /** @var GoogleSearchRedactRequest $request */
+        $request = new $redact('saloon');
+        $connector->send($request);
+
+        $log = $logger->logs()[0];
+        $loggedData = null;
+        $data = null;
+        $rules = $request->shouldRedact();
+        switch ($type) {
+            case Redactor::HEADERS->value:
+                $loggedData = $log['request_headers'];
+                $data = $request->defaultHeaders();
+                break;
+            case Redactor::QUERY->value:
+                $loggedData = $log['request_query'];
+                $data = $request->defaultQuery();
+                break;
+            case Redactor::BODY->value:
+                $loggedData = $log['request_body'];
+                $data = $request->defaultBody();
+                break;
+        }
+
+        if ($all) {
+            $this->assertEquals(
+                'redacted',
+                $loggedData,
+                'All '.$type.' should have been redacted'
+            );
+
+            return;
+        }
+
+        foreach ($rules[$type] as $key) {
+            $this->assertEquals(
+                'redacted',
+                Arr::get($loggedData, $key),
+                $type.': '.$key.' should have been redacted'
+            );
+            $this->assertNotEquals(
+                Arr::get($data, $key),
+                Arr::get($loggedData, $key),
+                $type.': '.$key.' should be different to the original value'
+            );
+        }
     }
 }
