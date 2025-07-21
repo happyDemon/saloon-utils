@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger;
 
 use HappyDemon\SaloonUtils\Logger\LoggerRepository;
+use HappyDemon\SaloonUtils\Logger\Middleware\RegisterLoggerMiddleware;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
 use HappyDemon\SaloonUtils\Tests\TestCase;
@@ -50,7 +51,7 @@ class PluginTest extends TestCase
             'Logger middleware should have been registered.'
         );
 
-        $logService = $response->getPendingRequest()->config()->get(ConnectorGeneric::CONFIG_LOGGER_SERVICE);
+        $logService = $response->getPendingRequest()->config()->get(RegisterLoggerMiddleware::CONFIG_LOGGER_SERVICE);
         $this->assertNotNull(
             $logService,
             'Logger service should have been registered in the pending request\'s config.'

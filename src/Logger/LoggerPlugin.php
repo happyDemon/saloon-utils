@@ -4,26 +4,15 @@ declare(strict_types=1);
 
 namespace HappyDemon\SaloonUtils\Logger;
 
+use HappyDemon\SaloonUtils\Logger\Middleware\RegisterLoggerMiddleware;
 use Saloon\Data\Pipe;
-use Saloon\Enums\PipeOrder;
-use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Http\Connector;
-use Saloon\Http\PendingRequest;
-use Saloon\Http\Response;
 
 /**
  * @mixin Connector
  */
 trait LoggerPlugin
 {
-    const CONFIG_LOGGER_SERVICE = 'saloon.logger.service';
-
-    const MIDDLEWARE_LOGGER = 'saloon.logger.request';
-
-    const MIDDLEWARE_RESPONSE = 'saloon.logger.response';
-
-    const MIDDLEWARE_FATAL = 'saloon.logger.fatal';
-
     public function bootLoggerPlugin(): void
     {
         if (config('saloon-utils.logs.enabled') !== true) {
@@ -35,33 +24,16 @@ trait LoggerPlugin
         // Ensure the logger is only set up once
         if (
             collect($this->middleware()->getRequestPipeline()->getPipes())
-                ->filter(fn (Pipe $pipe) => $pipe->name === self::MIDDLEWARE_LOGGER)
+                ->filter(fn (Pipe $pipe) => $pipe->name === RegisterLoggerMiddleware::MIDDLEWARE_LOGGER)
                 ->isNotEmpty()
         ) {
             return;
         }
 
         $this->middleware()
-            ->onRequest(function (PendingRequest $request) use ($logger) {
-                $logger->setUpLogger($this);
-
-                $request->config()->add(static::CONFIG_LOGGER_SERVICE, $logger);
-                $loggedRequest = $logger->logRequest($request, $this);
-
-                $request->middleware()
-                    ->onResponse(
-                        fn (Response $response) => $logger->logResponse($response, $loggedRequest, $this),
-                        self::MIDDLEWARE_RESPONSE,
-                        PipeOrder::FIRST
-                    );
-                $request->middleware()
-                    ->onFatalException(
-                        fn (FatalRequestException $response) => $logger->logFatalError($response, $loggedRequest, $this),
-                        self::MIDDLEWARE_FATAL,
-                        PipeOrder::FIRST
-                    );
-            },
-                self::MIDDLEWARE_LOGGER
+            ->onRequest(
+                new RegisterLoggerMiddleware($logger, $this),
+                RegisterLoggerMiddleware::MIDDLEWARE_LOGGER
             );
     }
 }

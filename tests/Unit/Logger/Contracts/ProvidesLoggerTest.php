@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Contracts;
 
+use HappyDemon\SaloonUtils\Logger\Middleware\RegisterLoggerMiddleware;
 use HappyDemon\SaloonUtils\Logger\Stores\MemoryLogger;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorProvidesLogger;
@@ -51,7 +52,7 @@ class ProvidesLoggerTest extends TestCase
         $this->assertEmpty($logs);
 
         /** @var MemoryLogger $logger */
-        $logger = $response->getPendingRequest()->config()->get(ConnectorProvidesLogger::CONFIG_LOGGER_SERVICE)->logger();
+        $logger = $response->getPendingRequest()->config()->get(RegisterLoggerMiddleware::CONFIG_LOGGER_SERVICE)->logger();
         $this->assertIsArray($logger->logs());
         $this->assertCount(1, $logger->logs());
     }
