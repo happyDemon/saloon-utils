@@ -57,6 +57,14 @@ class Logger implements \HappyDemon\SaloonUtils\Logger\Contracts\Logger
         return $log;
     }
 
+    public function delete(mixed $log, PendingRequest $request): void
+    {
+        $existing = Cache::driver('array')->get('saloon.logs', []);
+        unset($existing[$this->cacheKey($request)]);
+
+        Cache::driver('array')->put('saloon.logs', $existing);
+    }
+
     /* ************************************************************************************************************** */
 
     protected function cacheKey(PendingRequest $pendingRequest): string

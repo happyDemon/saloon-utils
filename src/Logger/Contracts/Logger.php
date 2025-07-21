@@ -32,4 +32,6 @@ interface Logger
      * @return mixed The updated log
      */
     public function updateWithFatalError(mixed $log, FatalRequestException $errorResponse, Connector $connector): mixed;
+
+    public function delete(mixed $log, PendingRequest $request): void;
 }

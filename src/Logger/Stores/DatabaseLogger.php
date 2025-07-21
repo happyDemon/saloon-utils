@@ -64,4 +64,11 @@ class DatabaseLogger implements Logger
 
         return $log;
     }
+
+    public function delete(mixed $log, PendingRequest $request): void
+    {
+        if ($log instanceof SaloonRequest) {
+            $log->delete();
+        }
+    }
 }

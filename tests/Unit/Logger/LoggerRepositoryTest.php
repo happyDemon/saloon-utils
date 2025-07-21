@@ -190,4 +190,41 @@ class LoggerRepositoryTest extends TestCase
             'No request should have been logged.'
         );
     }
+
+
+    public static function data_provider_ignore_connector(): array
+    {
+        return [
+            'ignore success' => [
+                'logs' => false,
+                'response' => MockResponse::make('', 200),
+            ],
+            'log error' => [
+                'logs' => true,
+                'response' => MockResponse::make('', 404),
+            ],
+        ];
+    }
+
+    #[DataProvider('data_provider_ignore_connector')]
+    #[Test]
+    public function log_requests_based_on_error_response(bool $logs, MockResponse $response): void
+    {
+        $this->app->bind(
+            Logger::class,
+            fn () => new MemoryLogger
+        );
+
+        /** @var ConnectorGeneric $mock */
+        $mock = (new ConnectorGeneric)
+            ->withMockClient(new MockClient([
+                '*' => $response,
+            ]));
+
+        $mock->search('saloon');
+
+        $logs = (new MemoryLogger)->logs();
+
+        $this->assertCount($logs ? 1 : 0, $logs);
+    }
 }

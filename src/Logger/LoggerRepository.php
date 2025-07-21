@@ -7,6 +7,7 @@ namespace HappyDemon\SaloonUtils\Logger;
 use HappyDemon\SaloonUtils\Logger\Contracts\ConditionallyIgnoreLogs;
 use HappyDemon\SaloonUtils\Logger\Contracts\DoNotLogRequest;
 use HappyDemon\SaloonUtils\Logger\Contracts\Logger;
+use HappyDemon\SaloonUtils\Logger\Contracts\OnlyLogErrorRequest;
 use HappyDemon\SaloonUtils\Logger\Contracts\ProvidesLogger;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Http\Connector;
@@ -67,6 +68,18 @@ class LoggerRepository
     {
         // The initial request was not logged
         if (empty($log)) {
+            return null;
+        }
+
+        // Ignore success responses?
+        if (
+            $response->successful() &&
+            (
+                is_a($response->getRequest(), OnlyLogErrorRequest::class) ||
+                is_a($connector, OnlyLogErrorRequest::class)
+            )
+        ) {
+            $this->logger->delete($log, $response->getPendingRequest());
             return null;
         }
 

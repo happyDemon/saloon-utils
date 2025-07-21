@@ -108,6 +108,22 @@ class MemoryLogger implements Logger
     /**
      * @throws InvalidArgumentException
      */
+    public function delete(mixed $log, PendingRequest $request): void
+    {
+        if (!is_array($log)) {
+            return;
+        }
+
+        // Remove the request
+        $requests = $this->store->get('requests');
+        unset($requests[$log['id']]);
+
+        $this->store->set('requests', $requests);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
     public function logs(): array
     {
         return array_values($this->store->get('requests', []));
