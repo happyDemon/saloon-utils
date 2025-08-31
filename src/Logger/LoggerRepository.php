@@ -55,7 +55,7 @@ class LoggerRepository
             // The request log is optionally stored based on the connector
             (
                 is_a($connector, ConditionallyIgnoreLogs::class) &&
-                $connector->shouldLogRequest($request)
+                ! $connector->shouldLogRequest($request)
             )
         ) {
             return null;

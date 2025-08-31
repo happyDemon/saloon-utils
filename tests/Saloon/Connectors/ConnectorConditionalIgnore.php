@@ -14,6 +14,6 @@ class ConnectorConditionalIgnore extends ConnectorGeneric implements Conditional
      */
     public function shouldLogRequest(PendingRequest $pendingRequest): bool
     {
-        return $pendingRequest->query()->get('q') === 'ignore';
+        return $pendingRequest->query()->get('q') !== 'ignore';
     }
 }
