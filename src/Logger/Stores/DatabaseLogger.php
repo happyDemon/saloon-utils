@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace HappyDemon\SaloonUtils\Logger\Stores;
 
+use Exception;
 use HappyDemon\SaloonUtils\Logger\Contracts\Logger;
 use HappyDemon\SaloonUtils\Logger\SaloonRequest;
+use Illuminate\Database\Eloquent\Model;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Http\Connector;
 use Saloon\Http\PendingRequest;
@@ -15,9 +17,19 @@ class DatabaseLogger implements Logger
 {
     use ParsesRequestData;
 
+    /**
+     * @var class-string<Model|SaloonRequest>
+     */
+    protected mixed $modelClass;
+
+    public function __construct()
+    {
+        $this->modelClass = config('saloon-utils.logs.database_model', SaloonRequest::class);
+    }
+
     public function create(PendingRequest $request, Connector $connector): mixed
     {
-        $log = SaloonRequest::create([
+        $log = $this->modelClass::create([
             'connector' => get_class($connector),
             'request' => get_class($request->getRequest()),
             'method' => $request->getRequest()->getMethod(),
@@ -65,9 +77,12 @@ class DatabaseLogger implements Logger
         return $log;
     }
 
+    /**
+     * @throws Exception
+     */
     public function delete(mixed $log, PendingRequest $request): void
     {
-        if ($log instanceof SaloonRequest) {
+        if ($log instanceof $this->modelClass) {
             $log->delete();
         }
     }
