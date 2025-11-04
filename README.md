@@ -13,6 +13,10 @@ composer require happydemon/saloon-utils
 php artisan vendor:publish --tag saloon-utils.config
 ```
 
+## Features
+
+<table data-card-size="large" data-view="cards"><thead><tr><th></th><th data-type="content-ref"></th><th data-hidden data-card-target data-type="content-ref"></th></tr></thead><tbody><tr><td>Flexible request logging</td><td><a href="request-logging/getting-started.md">getting-started.md</a></td><td><a href="request-logging/getting-started.md">getting-started.md</a></td></tr><tr><td>Connection management</td><td></td><td></td></tr></tbody></table>
+
 ## License
 
 MIT

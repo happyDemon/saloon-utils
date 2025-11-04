@@ -88,6 +88,12 @@ Schedule::command('model:prune', ['--model' => config('saloon-utils.logs.databas
 
 You are able to overwrite the model class altogether by defining your own model in the `saloon-utils.logs.database_model`  config.
 
+
+
+This is the default-bundled model:
+
+{% @github-files/github-code-block url="https://github.com/happyDemon/saloon-utils/blob/main/src/Logger/SaloonRequest.php" %}
+
 ### Memory logger
 
 ```
