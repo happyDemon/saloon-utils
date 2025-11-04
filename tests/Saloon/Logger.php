@@ -6,6 +6,8 @@ namespace HappyDemon\SaloonUtils\Tests\Saloon;
 
 use Illuminate\Support\Facades\Cache;
 use Saloon\Exceptions\Request\FatalRequestException;
+use Saloon\Exceptions\Request\RequestException;
+use Saloon\Exceptions\SaloonException;
 use Saloon\Http\Connector;
 use Saloon\Http\PendingRequest;
 use Saloon\Http\Response;
@@ -45,7 +47,7 @@ class Logger implements \HappyDemon\SaloonUtils\Logger\Contracts\Logger
         return $log;
     }
 
-    public function updateWithFatalError(mixed $log, FatalRequestException $errorResponse, Connector $connector): mixed
+    public function updateWithFatalError(mixed $log, RequestException | FatalRequestException | SaloonException $errorResponse, Connector $connector): mixed
     {
         $log['error'] = [
             'code' => $errorResponse->getCode(),
