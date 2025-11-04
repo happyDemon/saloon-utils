@@ -10,6 +10,8 @@ use HappyDemon\SaloonUtils\Logger\Contracts\Logger;
 use HappyDemon\SaloonUtils\Logger\Contracts\OnlyLogErrorRequest;
 use HappyDemon\SaloonUtils\Logger\Contracts\ProvidesLogger;
 use Saloon\Exceptions\Request\FatalRequestException;
+use Saloon\Exceptions\Request\RequestException;
+use Saloon\Exceptions\SaloonException;
 use Saloon\Http\Connector;
 use Saloon\Http\PendingRequest;
 use Saloon\Http\Response;
@@ -90,7 +92,7 @@ class LoggerRepository
     /**
      * Saloon cannot connect to an API
      */
-    public function logFatalError(FatalRequestException $response, mixed $log, Connector $connector): mixed
+    public function logFatalError(RequestException | FatalRequestException | SaloonException $response, mixed $log, Connector $connector): mixed
     {
         // The initial request was not logged
         if (empty($log)) {

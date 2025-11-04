@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace HappyDemon\SaloonUtils\Logger\Contracts;
 
 use Saloon\Exceptions\Request\FatalRequestException;
+use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Connector;
 use Saloon\Http\PendingRequest;
 use Saloon\Http\Response;
@@ -31,7 +32,7 @@ interface Logger
      * @param  mixed  $log  The log that was returned from $this->create()
      * @return mixed The updated log
      */
-    public function updateWithFatalError(mixed $log, FatalRequestException $errorResponse, Connector $connector): mixed;
+    public function updateWithFatalError(mixed $log, RequestException $errorResponse, Connector $connector): mixed;
 
     public function delete(mixed $log, PendingRequest $request): void;
 }

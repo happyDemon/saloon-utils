@@ -9,6 +9,8 @@ use HappyDemon\SaloonUtils\Logger\Contracts\Logger;
 use HappyDemon\SaloonUtils\Logger\SaloonRequest;
 use Illuminate\Database\Eloquent\Model;
 use Saloon\Exceptions\Request\FatalRequestException;
+use Saloon\Exceptions\Request\RequestException;
+use Saloon\Exceptions\SaloonException;
 use Saloon\Http\Connector;
 use Saloon\Http\PendingRequest;
 use Saloon\Http\Response;
@@ -60,7 +62,7 @@ class DatabaseLogger implements Logger
     /**
      * @param  SaloonRequest  $log
      */
-    public function updateWithFatalError(mixed $log, FatalRequestException $errorResponse, Connector $connector): mixed
+    public function updateWithFatalError(mixed $log, RequestException | FatalRequestException | SaloonException $errorResponse, Connector $connector): mixed
     {
         $log->update([
             'response_body' => [

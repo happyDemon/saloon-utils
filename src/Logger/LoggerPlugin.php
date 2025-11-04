@@ -7,6 +7,7 @@ namespace HappyDemon\SaloonUtils\Logger;
 use HappyDemon\SaloonUtils\Logger\Middleware\RegisterLoggerMiddleware;
 use Saloon\Data\Pipe;
 use Saloon\Http\Connector;
+use Saloon\Http\Pool;
 
 /**
  * @mixin Connector
@@ -35,5 +36,15 @@ trait LoggerPlugin
                 new RegisterLoggerMiddleware($logger, $this),
                 RegisterLoggerMiddleware::MIDDLEWARE_LOGGER
             );
+    }
+
+    public function loggedPool(
+        iterable|callable $requests = [],
+        int|callable $concurrency = 5,
+        callable|null $responseHandler = null,
+        callable|null $exceptionHandler = null
+    ): LoggerPool
+    {
+        return new LoggerPool(parent::pool($requests, $concurrency, $responseHandler, $exceptionHandler));
     }
 }
