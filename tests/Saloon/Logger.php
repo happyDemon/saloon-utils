@@ -47,7 +47,7 @@ class Logger implements \HappyDemon\SaloonUtils\Logger\Contracts\Logger
         return $log;
     }
 
-    public function updateWithFatalError(mixed $log, RequestException | FatalRequestException | SaloonException $errorResponse, Connector $connector): mixed
+    public function updateWithFatalError(mixed $log, RequestException|FatalRequestException|SaloonException $errorResponse, Connector $connector): mixed
     {
         $log['error'] = [
             'code' => $errorResponse->getCode(),
