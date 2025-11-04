@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace HappyDemon\SaloonUtils\Logger;
 
 use GuzzleHttp\Promise\PromiseInterface;
 use HappyDemon\SaloonUtils\Logger\Middleware\RegisterLoggerMiddleware;
 use Illuminate\Support\Traits\ForwardsCalls;
 use ReflectionClass;
-use Saloon\Exceptions\Request\ClientException;
-use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Connector;
 use Saloon\Http\Pool;
@@ -23,8 +23,7 @@ class LoggerPool
 
     public function __construct(
         public readonly Pool $pool
-    )
-    {
+    ) {
         $this->poolReflection = new ReflectionClass($this->pool);
     }
 
@@ -62,7 +61,6 @@ class LoggerPool
             }
         );
 
-
         /** @var \Closure(mixed, array-key, \GuzzleHttp\Promise\PromiseInterface): (void)|null $exceptionHandler */
         $exceptionHandler = $this->getProtectedValueFromPool('exceptionHandler');
 
@@ -76,7 +74,6 @@ class LoggerPool
                         ->get(RegisterLoggerMiddleware::CONFIG_LOGGER_SERVICE)
                         ?->logFatalError($exception, $logData, $connector);
                 }
-
 
                 // Execute original exception handler
                 if (is_callable($exceptionHandler)) {

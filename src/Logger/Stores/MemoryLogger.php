@@ -88,7 +88,7 @@ class MemoryLogger implements Logger
      *
      * @throws InvalidArgumentException
      */
-    public function updateWithFatalError(mixed $log, RequestException | FatalRequestException | SaloonException $errorResponse, Connector $connector): mixed
+    public function updateWithFatalError(mixed $log, RequestException|FatalRequestException|SaloonException $errorResponse, Connector $connector): mixed
     {
         $log = array_merge($log, [
             'response_body' => [

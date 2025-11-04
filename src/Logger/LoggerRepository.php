@@ -92,7 +92,7 @@ class LoggerRepository
     /**
      * Saloon cannot connect to an API
      */
-    public function logFatalError(RequestException | FatalRequestException | SaloonException $response, mixed $log, Connector $connector): mixed
+    public function logFatalError(RequestException|FatalRequestException|SaloonException $response, mixed $log, Connector $connector): mixed
     {
         // The initial request was not logged
         if (empty($log)) {

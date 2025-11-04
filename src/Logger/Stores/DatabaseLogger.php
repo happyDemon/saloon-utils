@@ -62,7 +62,7 @@ class DatabaseLogger implements Logger
     /**
      * @param  SaloonRequest  $log
      */
-    public function updateWithFatalError(mixed $log, RequestException | FatalRequestException | SaloonException $errorResponse, Connector $connector): mixed
+    public function updateWithFatalError(mixed $log, RequestException|FatalRequestException|SaloonException $errorResponse, Connector $connector): mixed
     {
         $log->update([
             'response_body' => [

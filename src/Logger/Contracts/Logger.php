@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace HappyDemon\SaloonUtils\Logger\Contracts;
 
-use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Connector;
 use Saloon\Http\PendingRequest;

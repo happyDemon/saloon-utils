@@ -12,6 +12,7 @@ use Saloon\Http\PendingRequest;
 class RegisterLoggerMiddleware
 {
     const LOGGER_DATA = 'saloon.logger.log';
+
     const CONFIG_LOGGER_SERVICE = 'saloon.logger.service';
 
     const MIDDLEWARE_LOGGER = 'saloon.logger.request';
