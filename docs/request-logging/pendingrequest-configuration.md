@@ -14,9 +14,8 @@ $log = $pendingRequest->config()->get(RegisterLoggerMiddleware::LOGGER_DATA);
 
 ```
 
-{% hint style="info" %}
-If $log is null, that means no log was ever created for the request, response handlers will be ignored
-{% endhint %}
+> [!NOTE]
+> If $log is null, that means no log was ever created for the request, response handlers will be ignored
 
 In case of the database logger, this would be a `HappyDemon\SaloonUtils\Logger\SaloonRequest` model instance.
 

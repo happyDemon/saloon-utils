@@ -77,9 +77,8 @@ php artisan migrate
 
 This logger will store each request in the `saloon_requests` table.
 
-{% hint style="info" %}
-Be sure to schedule model pruning daily with a cronjob
-{% endhint %}
+> [!NOTE]
+> Be sure to schedule model pruning daily with a cronjob
 
 ```php
 use HappyDemon\SaloonUtils\Logger\SaloonRequest;
@@ -209,9 +208,8 @@ You can easily build your own logger and set it as the default.
 
 Ensure your custom logger implements the `Logger` interface.
 
-{% hint style="info" %}
-Be sure to make use of the `HappyDemon\SaloonUtils\Logger\Stores\ParsesRequestData` trait when implementing your own logger. It provides helper methods for data conversion and redaction.
-{% endhint %}
+> [!NOTE]
+> Be sure to make use of the `HappyDemon\SaloonUtils\Logger\Stores\ParsesRequestData` trait when implementing your own logger. It provides helper methods for data conversion and redaction.
 
 ```php
 <?php

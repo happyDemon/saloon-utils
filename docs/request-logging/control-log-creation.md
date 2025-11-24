@@ -2,9 +2,8 @@
 
 You have full control over when and how your requests are logged.
 
-{% hint style="danger" %}
-Config file values take precedence over every thing.
-{% endhint %}
+> [!CAUTION]
+> Config file values take precedence over every thing.
 
 ## Configuration
 
@@ -42,9 +41,8 @@ Alternatively, you are able to define logging behaviour on requests individually
 
 You can limit logging to only errors by implementing the `OnlyLogErrorRequest` contract.
 
-{% hint style="info" %}
-You are able to add `HappyDemon\SaloonUtils\Logger\Contracts\OnlyLogErrorRequest` to both `Request` and `Connector` classes.
-{% endhint %}
+> [!NOTE]
+> You are able to add `HappyDemon\SaloonUtils\Logger\Contracts\OnlyLogErrorRequest` to both `Request` and `Connector` classes.
 
 ```php
 <?php
@@ -68,9 +66,8 @@ class GetServersRequest extends Request implements OnlyLogErrorRequest
 
 You can ensure individual requests will never be recorded by implementing the `DoNotLogRequest` contract.
 
-{% hint style="info" %}
-You are able to add `HappyDemon\SaloonUtils\Logger\Contracts\DoNotLogRequest` to both `Request` and `Connector` classes.
-{% endhint %}
+> [!NOTE]
+> You are able to add `HappyDemon\SaloonUtils\Logger\Contracts\DoNotLogRequest` to both `Request` and `Connector` classes.
 
 ```php
 <?php
@@ -94,9 +91,8 @@ class GetServersRequest extends Request implements DoNotLogRequest
 
 If you want more fine-grained control over which requests should be logged, you can implement the `ConditionallyIgnoreLogs` contract.
 
-{% hint style="info" %}
-You are able to add `HappyDemon\SaloonUtils\Logger\Contracts\ConditionallyIgnoreLogs` to both `Request` and `Connector` classes.
-{% endhint %}
+> [!NOTE]
+> You are able to add `HappyDemon\SaloonUtils\Logger\Contracts\ConditionallyIgnoreLogs` to both `Request` and `Connector` classes.
 
 This contract allows you to implement any logic to prevent a request from being logged by returning `false`.
 
