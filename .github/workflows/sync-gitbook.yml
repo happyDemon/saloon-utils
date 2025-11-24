@@ -1,0 +1,40 @@
+name: Sync GitBook Content
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync-docs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: temp_gh_pages
+
+      - name: Sync files to docs
+        run: |
+          mkdir -p docs
+          # Sync content from gh-pages to docs folder
+          # Using rsync to handle deletion of removed files and exclusion of .git
+          rsync -av --delete --exclude '.git' --exclude '.github' temp_gh_pages/ docs/
+          
+          # Clean up temporary directory
+          rm -rf temp_gh_pages
+
+      - name: Commit and Push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs: sync from gh-pages branch"
+          branch: main
+          file_pattern: 'docs/'
+
