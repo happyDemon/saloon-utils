@@ -24,7 +24,8 @@ php artisan vendor:publish --tag saloon-utils.config
 
 ## Documentation
 
-You can find the [documentation here](https://happydemon.gitbook.io/saloon-utils/)
+You can find the documentation in the `docs` folder or [on gitbook](https://happydemon.gitbook.io/saloon-utils/).
+
 ## Changelog
 
 Please refer to the [changelog](changelog.md) for more information on recent changes.
