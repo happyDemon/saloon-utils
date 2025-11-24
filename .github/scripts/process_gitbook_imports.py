@@ -23,14 +23,16 @@ def get_language(file_path):
 
 def process_file(filepath):
     with open(filepath, 'r') as f:
-        content = f.read()
+        original_content = f.read()
+
+    content = original_content
 
     # Regex to find the gitbook embed tag
     # Pattern handles the example: {% @github-files/github-code-block url="..." ... %}
     # Using non-greedy match for the content inside the tag
-    pattern = r'\{%\s*@github-files/github-code-block\s+url="(https://github\.com/[^"]+)"[^%]*%\}'
+    pattern_embed = r'\{%\s*@github-files/github-code-block\s+url="(https://github\.com/[^"]+)"[^%]*%\}'
     
-    def replace_match(match):
+    def replace_embed(match):
         url = match.group(1)
         # Extract file path from URL. Assumes standard GitHub blob URL structure:
         # https://github.com/user/repo/blob/branch/path/to/file
@@ -60,12 +62,42 @@ def process_file(filepath):
         
         return f"```{language}\n{file_content}\n```"
 
-    new_content = re.sub(pattern, replace_match, content)
+    content = re.sub(pattern_embed, replace_embed, content)
+
+    # Regex to find GitBook hints
+    # Pattern: {% hint style="style" %} ... {% endhint %}
+    # Uses dotall matching to capture multiline content
+    pattern_hint = r'\{%\s*hint\s+style="([^"]+)"\s*%\}(.*?)\{%\s*endhint\s*%\}'
     
-    if new_content != content:
+    hint_map = {
+        'info': 'NOTE',
+        'success': 'TIP',
+        'warning': 'WARNING',
+        'danger': 'CAUTION'
+    }
+    
+    def replace_hint(match):
+        style = match.group(1)
+        hint_content = match.group(2).strip()
+        
+        github_type = hint_map.get(style, 'NOTE') # Default to NOTE if style is unknown
+        
+        # Format the content: add "> " to each line
+        formatted_lines = []
+        for line in hint_content.splitlines():
+            formatted_lines.append(f"> {line}")
+            
+        formatted_content = "\n".join(formatted_lines)
+        
+        return f"> [!{github_type}]\n{formatted_content}"
+
+    # Use re.DOTALL to allow dot to match newlines in hint content
+    content = re.sub(pattern_hint, replace_hint, content, flags=re.DOTALL)
+    
+    if content != original_content:
         print(f"Updated {filepath}")
         with open(filepath, 'w') as f:
-            f.write(new_content)
+            f.write(content)
 
 def main():
     docs_dir = 'docs'
