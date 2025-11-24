@@ -33,7 +33,29 @@ In the `saloon-utils.php` config file you can also define which requests or conn
 \
 Any requests or connectors defined under `saloon-utils.logs.ignore`  will never be logged, checks defined on the request- or connector-level will be bypassed.
 
-{% @github-files/github-code-block url="https://github.com/happyDemon/saloon-utils/blob/main/config/saloon-utils.php" visible="true" fullWidth="false" %}
+```php
+<?php
+
+declare(strict_types=1);
+
+return [
+    'logs' => [
+        'enabled' => env('SALOON_REQUEST_LOGS', true),
+        // Pruning
+        'keep_for_days' => env('SALOON_REQUEST_PRUNE', 14),
+        // The bundled migration uses longtext, which allows for 4,294,967,295 characters
+        'response_max_length' => 4294967295,
+        'database_model' => \HappyDemon\SaloonUtils\Logger\SaloonRequest::class,
+        'database_connection' => env('SALOON_REQUEST_DB_CONNECTION', env('DB_CONNECTION')),
+        // Skip request logging
+        'ignore' => [
+            'connectors' => [],
+            'requests' => [],
+        ],
+    ],
+];
+
+```
 
 ## Setup
 
