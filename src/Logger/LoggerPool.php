@@ -8,8 +8,8 @@ use GuzzleHttp\Promise\PromiseInterface;
 use HappyDemon\SaloonUtils\Logger\Middleware\RegisterLoggerMiddleware;
 use Illuminate\Support\Traits\ForwardsCalls;
 use ReflectionClass;
-use Saloon\Exceptions\Request\RequestException;
 use Saloon\Exceptions\Request\FatalRequestException;
+use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Connector;
 use Saloon\Http\Pool;
 
