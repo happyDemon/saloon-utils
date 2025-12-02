@@ -9,6 +9,7 @@ use HappyDemon\SaloonUtils\Logger\Middleware\RegisterLoggerMiddleware;
 use Illuminate\Support\Traits\ForwardsCalls;
 use ReflectionClass;
 use Saloon\Exceptions\Request\RequestException;
+use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Http\Connector;
 use Saloon\Http\Pool;
 
@@ -65,7 +66,7 @@ class LoggerPool
         $exceptionHandler = $this->getProtectedValueFromPool('exceptionHandler');
 
         $this->pool->withExceptionHandler(
-            function (RequestException $exception, mixed $requestId, PromiseInterface $promise) use ($connector, $exceptionHandler) {
+            function (FatalRequestException|RequestException $exception, mixed $requestId, PromiseInterface $promise) use ($connector, $exceptionHandler) {
                 // If the pending request has log data attached
                 if ($logData = $exception->getPendingRequest()->config()->get(RegisterLoggerMiddleware::LOGGER_DATA)) {
                     // Log the request
