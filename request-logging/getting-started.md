@@ -74,16 +74,13 @@ use Saloon\Http\Pool;
 
 $connector = new ForgeConnector;
 
-/** @var LoggerPool | Pool $pool */
+/** @var LoggerPool|Pool $pool */
 $pool = $connector->loggedPool(
-    iterable|callable $requests = [],
-    int|callable $concurrency = 5,
-    callable|null $responseHandler = null,
-    callable|null $exceptionHandler = null
-)
+    requests: [new GetServersRequest, new GetSitesRequest],
+    concurrency: 5,
+);
 
-$promise = $pool->send();
-$promise->wait();
+$pool->send()->wait();
 ```
 
-The `LoggerPool` can be considered identical to Saloon's `Pool` class.
+`loggedPool()` accepts the same arguments as Saloon's [`pool()`](https://docs.saloon.dev/digging-deeper/concurrency-and-pools) method — `requests`, `concurrency`, and optional `responseHandler` / `exceptionHandler` callbacks. The returned `LoggerPool` can be considered identical to Saloon's `Pool` class.
