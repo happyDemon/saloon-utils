@@ -41,15 +41,12 @@ class ProvidesLoggerTest extends TestCase
     #[Test]
     public function respects_contract(): void
     {
-        // Send the request (request implements `DoNotLogRequest`)
         $response = $this->connector->search('saloon request not logged');
 
-        // Verify that the request log is registered
         $logs = $this->requestLogger->getLogs();
 
-        // The logger assigned in the base test case should not contain any logs
         $this->assertIsArray($logs);
-        $this->assertEmpty($logs);
+        $this->assertEmpty($logs, 'The default logger should not be used when the connector provides its own.');
 
         /** @var MemoryLogger $logger */
         $logger = $response->getPendingRequest()->config()->get(RegisterLoggerMiddleware::CONFIG_LOGGER_SERVICE)->logger();

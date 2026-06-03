@@ -9,9 +9,9 @@ Batteries for [Saloon](https://docs.saloon.dev/).
 - Request logging (to database by default or in-memory)
 
 Supported: 
-- Laravel 11/12
-- PHP 8.2/8.3/8.4
-- Saloon 3
+- Laravel 11/12/13
+- PHP 8.3/8.4/8.5
+- Saloon 4
 
 ## Installation
 

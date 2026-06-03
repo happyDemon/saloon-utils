@@ -36,9 +36,9 @@ jobs:
         uses: matriphe/laravel-pkg-test-action@v2
         with:
           operating_system: ubuntu-latest
-          php_version: 8.3
+          php_version: 8.4
           php_extensions: pdo_sqlite,sqlite3,xdebug
-          laravel_version: 12.*
+          laravel_version: 13.*
           branch: main
           laravel_install_args: --prefer-dist
           package_install_args: --prefer-dist --no-progress

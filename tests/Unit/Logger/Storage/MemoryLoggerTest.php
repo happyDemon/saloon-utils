@@ -56,7 +56,6 @@ class MemoryLoggerTest extends TestCase implements StorageLoggerInterface
         ]);
         $connector->withMockClient($mockClient);
 
-        // Send the request
         $connector->search('saloon');
     }
 
@@ -122,12 +121,10 @@ class MemoryLoggerTest extends TestCase implements StorageLoggerInterface
         $logger = app(MemoryLogger::class);
 
         foreach (['saloon', 'saloon v3'] as $i => $search) {
-            // Send the request
             $connector->search($search);
 
             $this->assertCount($i + 1, $logger->logs());
 
-            // verify the data matches
             $request = new GoogleSearchRequest($search);
             $log = $logger->logs()[$i];
 
@@ -135,7 +132,6 @@ class MemoryLoggerTest extends TestCase implements StorageLoggerInterface
             $this->assertEquals($request->query()->all(), $log['request_query'], 'Query parameters should match');
             $this->assertEquals($request->resolveEndpoint(), $log['endpoint'], 'Endpoint should have set correctly');
         }
-
     }
 
     #[Test]
@@ -152,13 +148,13 @@ class MemoryLoggerTest extends TestCase implements StorageLoggerInterface
         try {
             $connector->search('saloon');
             $this->fail('Should have thrown a FatalRequestException');
-        } catch (FatalRequestException $e) {
+        } catch (FatalRequestException $exception) {
             $this->assertNull(
-                $repository->logFatalError($e, null, $connector),
+                $repository->logFatalError($exception, null, $connector),
                 'No log should return a null response'
             );
 
-            $log = $repository->logFatalError($e, ['id' => 'request'], $connector);
+            $log = $repository->logFatalError($exception, ['id' => 'request'], $connector);
             $this->assertIsArray($log);
         }
     }

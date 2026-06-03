@@ -7,3 +7,5 @@ phpunit.xml.bak
 composer.lock
 /coverage
 clover.xml
+/.claude
+/.superpowers

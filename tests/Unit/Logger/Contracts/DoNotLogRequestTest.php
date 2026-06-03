@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace HappyDemon\SaloonUtils\Tests\Unit\Logger\Contracts;
 
-use HappyDemon\SaloonUtils\Logger\Contracts\DoNotLogRequest;
 use HappyDemon\SaloonUtils\Tests\Saloon\Connectors\ConnectorGeneric;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequestNoLog;
 use HappyDemon\SaloonUtils\Tests\TestCase;
@@ -39,13 +38,11 @@ class DoNotLogRequestTest extends TestCase
     #[Test]
     public function respects_contract(): void
     {
-        // Send the request (request implements `DoNotLogRequest`)
         $this->connector->searchWithoutLog('saloon request not logged');
 
-        // Verify that the request log is registered
         $logs = $this->requestLogger->getLogs();
 
         $this->assertIsArray($logs);
-        $this->assertCount(0, $logs, 'Request should have been registered.');
+        $this->assertCount(0, $logs, 'Request should not have been registered.');
     }
 }

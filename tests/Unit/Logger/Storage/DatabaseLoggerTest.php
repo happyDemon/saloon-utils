@@ -31,7 +31,6 @@ class DatabaseLoggerTest extends TestCaseDatabase implements StorageLoggerInterf
         ]);
         $connector->withMockClient($mockClient);
 
-        // Send the request
         $connector->search('saloon');
     }
 
@@ -72,13 +71,11 @@ class DatabaseLoggerTest extends TestCaseDatabase implements StorageLoggerInterf
         $connector->withMockClient($mockClient);
 
         foreach (['saloon', 'saloon v3'] as $i => $search) {
-            // Send the request
             $connector->search($search);
 
             $model = new SaloonRequest;
             $this->assertDatabaseCount($model->getTable(), $i + 1);
 
-            // verify the data matches
             $request = new GoogleSearchRequest($search);
 
             /** @var SaloonRequest $log */
@@ -112,11 +109,10 @@ class DatabaseLoggerTest extends TestCaseDatabase implements StorageLoggerInterf
         $connector = app(ConnectorFatal::class);
 
         try {
-            // Send the request
             $connector->search('saloon');
 
             $this->fail('Should have thrown a FatalRequestException');
-        } catch (FatalRequestException $e) {
+        } catch (FatalRequestException) {
             $this->assertDatabaseCount((new SaloonRequest)->getTable(), 1);
 
             /** @var SaloonRequest $log */

@@ -58,7 +58,6 @@ class LoggerRepositoryTest extends TestCase
         $connector = app(ConnectorGeneric::class);
         $this->mockResponse($connector, MockResponse::make('', 200));
 
-        // Send the request
         $connector->search('saloon');
     }
 
@@ -80,14 +79,12 @@ class LoggerRepositoryTest extends TestCase
         $connector = app(ConnectorGeneric::class);
         $this->mockResponse($connector, MockResponse::make('', 200));
 
-        // Send the request
         $connector->search('saloon');
     }
 
     #[Test]
     public function logs_fatal_error(): void
     {
-        // Clear the global middleware, we want to make a real request
         Config::clearGlobalMiddleware();
 
         $this->mock(
@@ -101,7 +98,6 @@ class LoggerRepositoryTest extends TestCase
 
         $connector = app(ConnectorFatal::class);
 
-        // Send the request
         $connector->search('saloon');
     }
 
@@ -156,11 +152,9 @@ class LoggerRepositoryTest extends TestCase
     #[DataProvider('data_provider')]
     public function no_logs_if_configured(string $type, ?string $contract, string $connector, string $request): void
     {
-        // Reset config
         config()->set('saloon-utils.logs.ignore.requests', []);
         config()->set('saloon-utils.logs.ignore.connectors', []);
 
-        // configure what needs to be ignored
         switch ($type) {
             case 'request':
                 config()->set('saloon-utils.logs.ignore.requests', [$request]);
@@ -175,55 +169,18 @@ class LoggerRepositoryTest extends TestCase
             fn () => new MemoryLogger
         );
 
-        /** @var ConnectorGeneric $mock */
-        $mock = (new $connector)
+        /** @var ConnectorGeneric $connectorInstance */
+        $connectorInstance = (new $connector)
             ->withMockClient(new MockClient([
                 '*' => MockResponse::make('', 200),
             ]));
 
-        // Make a request
-        $mock->send(new $request('saloon'));
+        $connectorInstance->send(new $request('saloon'));
 
         $this->assertCount(
             0,
             $this->app->make(Logger::class)->logs(),
             'No request should have been logged.'
         );
-    }
-
-    public static function data_provider_ignore_connector(): array
-    {
-        return [
-            'ignore success' => [
-                'logs' => false,
-                'response' => MockResponse::make('', 200),
-            ],
-            'log error' => [
-                'logs' => true,
-                'response' => MockResponse::make('', 404),
-            ],
-        ];
-    }
-
-    #[DataProvider('data_provider_ignore_connector')]
-    #[Test]
-    public function log_requests_based_on_error_response(bool $logs, MockResponse $response): void
-    {
-        $this->app->bind(
-            Logger::class,
-            fn () => new MemoryLogger
-        );
-
-        /** @var ConnectorGeneric $mock */
-        $mock = (new ConnectorGeneric)
-            ->withMockClient(new MockClient([
-                '*' => $response,
-            ]));
-
-        $mock->search('saloon');
-
-        $logs = (new MemoryLogger)->logs();
-
-        $this->assertCount($logs ? 1 : 0, $logs);
     }
 }

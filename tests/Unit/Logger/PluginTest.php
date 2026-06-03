@@ -41,10 +41,8 @@ class PluginTest extends TestCase
     #[Test]
     public function gets_set_up_correctly(): void
     {
-        // Send the request
         $response = $this->connector->search('saloon');
 
-        // Ensure the middleware was registered
         $this->assertCount(
             1,
             $this->connector->middleware()->getRequestPipeline()->getPipes(),
@@ -79,10 +77,8 @@ class PluginTest extends TestCase
         ]);
         $this->connector->withMockClient($mockClient);
 
-        // Send the request
         $this->connector->search('saloon');
 
-        // Ensure the middleware was registered
         $this->assertCount(
             0,
             $this->connector->middleware()->getRequestPipeline()->getPipes(),
@@ -97,10 +93,8 @@ class PluginTest extends TestCase
     #[Test]
     public function logs_normal_request_correctly(): void
     {
-        // Send the request
         $this->connector->search('saloon');
 
-        // Verify that the request log is registered
         $logs = $this->requestLogger->getLogs();
 
         $this->assertIsArray($logs);
@@ -119,12 +113,8 @@ class PluginTest extends TestCase
     #[Test]
     public function middle_ware_is_registered_once(): void
     {
-        // Context: he logger is registered in middleware
-
-        // Send the request
         $this->connector->search('saloon');
 
-        // Send another request
         $this->connector->search('saloon v3');
 
         $this->assertCount(
@@ -141,13 +131,10 @@ class PluginTest extends TestCase
     #[Test]
     public function each_request_is_logged(): void
     {
-        // Send the request
         $this->connector->search('saloon');
 
-        // Send another request
         $this->connector->search('saloon v3');
 
-        // Verify that the request logs are handled correctly
         $logs = $this->requestLogger->getLogs();
 
         $this->assertIsArray($logs);
