@@ -6,8 +6,9 @@ namespace HappyDemon\SaloonUtils\Tests\Saloon\Requests;
 
 use HappyDemon\SaloonUtils\Logger\Contracts\OnlyLogErrorRequest;
 use Saloon\Enums\Method;
+use Saloon\Http\Request;
 
-class GoogleSearchErrorRequest extends \Saloon\Http\Request implements OnlyLogErrorRequest
+class GoogleSearchErrorRequest extends Request implements OnlyLogErrorRequest
 {
     protected Method $method = Method::GET;
 

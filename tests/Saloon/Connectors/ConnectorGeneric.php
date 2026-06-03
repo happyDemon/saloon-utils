@@ -10,9 +10,10 @@ use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequest;
 use HappyDemon\SaloonUtils\Tests\Saloon\Requests\GoogleSearchRequestNoLog;
 use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
+use Saloon\Http\Connector;
 use Saloon\Http\Response;
 
-class ConnectorGeneric extends \Saloon\Http\Connector
+class ConnectorGeneric extends Connector
 {
     use LoggerPlugin;
 
