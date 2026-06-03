@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace HappyDemon\SaloonUtils\Tests\Saloon\Requests;
 
 use Saloon\Enums\Method;
+use Saloon\Http\Request;
 
-class GoogleSearchRequest extends \Saloon\Http\Request
+class GoogleSearchRequest extends Request
 {
     protected Method $method = Method::GET;
 

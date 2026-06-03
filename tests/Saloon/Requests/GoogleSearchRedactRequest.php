@@ -6,9 +6,10 @@ namespace HappyDemon\SaloonUtils\Tests\Saloon\Requests;
 
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
+use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-class GoogleSearchRedactRequest extends \Saloon\Http\Request implements HasBody
+class GoogleSearchRedactRequest extends Request implements HasBody
 {
     use HasJsonBody;
 

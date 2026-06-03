@@ -12,6 +12,7 @@ use Saloon\Exceptions\Request\FatalRequestException;
 use Saloon\Exceptions\Request\RequestException;
 use Saloon\Http\Connector;
 use Saloon\Http\Pool;
+use Saloon\Http\Response;
 
 /**
  * @mixin Pool
@@ -38,14 +39,14 @@ class LoggerPool
 
     public function send(): PromiseInterface
     {
-        /** @var \Closure(\Saloon\Http\Response, array-key, \GuzzleHttp\Promise\PromiseInterface): (void)|null $responseHandler */
+        /** @var \Closure(Response, array-key, PromiseInterface): (void)|null $responseHandler */
         $responseHandler = $this->getProtectedValueFromPool('responseHandler');
 
         /** @var Connector|Connector $connector */
         $connector = $this->getProtectedValueFromPool('connector');
 
         $this->pool->withResponseHandler(
-            function (\Saloon\Http\Response $response, mixed $requestId, PromiseInterface $promise) use ($connector, $responseHandler) {
+            function (Response $response, mixed $requestId, PromiseInterface $promise) use ($connector, $responseHandler) {
                 // If the pending request has log data attached
                 if ($logData = $response->getPendingRequest()->config()->get(RegisterLoggerMiddleware::LOGGER_DATA)) {
                     // Log the request
@@ -62,7 +63,7 @@ class LoggerPool
             }
         );
 
-        /** @var \Closure(mixed, array-key, \GuzzleHttp\Promise\PromiseInterface): (void)|null $exceptionHandler */
+        /** @var \Closure(mixed, array-key, PromiseInterface): (void)|null $exceptionHandler */
         $exceptionHandler = $this->getProtectedValueFromPool('exceptionHandler');
 
         $this->pool->withExceptionHandler(
