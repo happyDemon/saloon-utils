@@ -11,6 +11,7 @@ All notable changes to `saloon-utils` will be documented in this file.
 - Migrated to Saloon v4 (security release); dropped Saloon v3 support
 
 ### Removed
+- Dropped Laravel 11 support (no longer receives security fixes)
 - Dropped PHP 8.2 support (minimum is now PHP 8.3)
 
 
