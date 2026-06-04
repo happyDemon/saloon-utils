@@ -7,6 +7,7 @@
 * [Getting started](request-logging/getting-started.md)
 * [Control log creation](request-logging/control-log-creation.md)
 * [Loggers](request-logging/loggers.md)
+* [How requests are stored](request-logging/stored-data.md)
 * [PendingRequest configuration](request-logging/pendingrequest-configuration.md)
 * [Redacting request data](request-logging/redacting-request-data.md)
 

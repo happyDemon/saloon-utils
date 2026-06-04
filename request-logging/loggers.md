@@ -77,6 +77,8 @@ php artisan migrate
 
 This logger will store each request in the `saloon_requests` table.
 
+By default logs are written to your application's default database connection. To store them on a different connection, set `saloon-utils.logs.database_connection` (or the `SALOON_REQUEST_DB_CONNECTION` environment variable) to the connection's name.
+
 {% hint style="info" %}
 Be sure to schedule model pruning daily with a cronjob
 {% endhint %}
